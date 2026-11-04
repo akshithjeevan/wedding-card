@@ -15,6 +15,11 @@ export const WeddingDetails: React.FC = () => {
       primary: weddingData.schedule.dateDisplay,
       secondary: weddingData.schedule.dayOfWeek,
       extra: `(${weddingData.schedule.malayalamDate})`,
+      // fade-right effect (starts from left, fades in to the right)
+      animation: {
+        initial: { opacity: 0, x: -50 },
+        whileInView: { opacity: 1, x: 0 },
+      },
     },
     {
       icon: Clock,
@@ -22,6 +27,11 @@ export const WeddingDetails: React.FC = () => {
       primary: weddingData.schedule.timeDisplay,
       secondary: "Muhurtham",
       extra: "Auspicious Hours",
+      // fade-left effect (starts from right, fades in to the left)
+      animation: {
+        initial: { opacity: 0, x: 50 },
+        whileInView: { opacity: 1, x: 0 },
+      },
     },
     {
       icon: MapPin,
@@ -29,6 +39,11 @@ export const WeddingDetails: React.FC = () => {
       primary: weddingData.venue.name,
       secondary: weddingData.venue.addressLine1,
       extra: weddingData.venue.addressLine2,
+      // fade-right effect (starts from left, fades in to the right)
+      animation: {
+        initial: { opacity: 0, x: -50 },
+        whileInView: { opacity: 1, x: 0 },
+      },
     },
   ];
 
@@ -73,10 +88,14 @@ export const WeddingDetails: React.FC = () => {
             return (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: idx * 0.15 }}
+                initial={item.animation.initial}
+                whileInView={item.animation.whileInView}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{
+                  duration: 0.85,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: idx * 0.12,
+                }}
                 className={`flex flex-col items-center px-6 relative ${
                   idx !== 0 ? "md:border-l md:border-[#C49A43]/40" : ""
                 }`}
