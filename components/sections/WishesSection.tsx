@@ -5,8 +5,126 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FloralCorner } from "@/components/decorations/FloralCorner";
 import { GoldDivider } from "@/components/decorations/GoldDivider";
 import { Wish, initialWishes } from "@/data/initialWishes";
-import { Heart, Send, Sparkles, MessageSquareHeart, CheckCircle2 } from "lucide-react";
+import { Heart, Send, Sparkles, MessageSquareHeart, CheckCircle2, Palette } from "lucide-react";
 import confetti from "canvas-confetti";
+
+export interface StickyColorTheme {
+  id: string;
+  name: string;
+  emoji: string;
+  bgGradient: string;
+  dotColor: string;
+  border: string;
+  pinAccent: string;
+  pinHead: string;
+  tagClass: string;
+  authorColor: string;
+  metaColor: string;
+  textColor: string;
+  heartActiveBg: string;
+  heartHover: string;
+}
+
+export const STICKY_THEMES: Record<string, StickyColorTheme> = {
+  yellow: {
+    id: "yellow",
+    name: "Sunny Gold",
+    emoji: "💛",
+    bgGradient: "from-[#FFFDE8] via-[#FEF9C3] to-[#FEF08A]",
+    dotColor: "#EAB308",
+    border: "border-[#EAB308]/40",
+    pinAccent: "#B45309",
+    pinHead: "from-[#FBBF24] via-[#F59E0B] to-[#D97706]",
+    tagClass: "bg-[#78350F]/10 text-[#78350F] border-[#78350F]/20",
+    authorColor: "text-[#78350F]",
+    metaColor: "text-[#92400E]",
+    textColor: "text-[#451A03]",
+    heartActiveBg: "bg-[#78350F] text-[#FFFBEB]",
+    heartHover: "hover:bg-[#78350F]/15 text-[#78350F] border-[#78350F]/30",
+  },
+  rose: {
+    id: "rose",
+    name: "Blush Rose",
+    emoji: "🌸",
+    bgGradient: "from-[#FFF1F2] via-[#FFE4E6] to-[#FECDD3]",
+    dotColor: "#F43F5E",
+    border: "border-[#F43F5E]/40",
+    pinAccent: "#9F1239",
+    pinHead: "from-[#FDA4AF] via-[#F43F5E] to-[#BE123C]",
+    tagClass: "bg-[#881337]/10 text-[#881337] border-[#881337]/20",
+    authorColor: "text-[#881337]",
+    metaColor: "text-[#9F1239]",
+    textColor: "text-[#4C0519]",
+    heartActiveBg: "bg-[#881337] text-[#FFF1F2]",
+    heartHover: "hover:bg-[#881337]/15 text-[#881337] border-[#881337]/30",
+  },
+  sage: {
+    id: "sage",
+    name: "Mint Sage",
+    emoji: "🌿",
+    bgGradient: "from-[#F0FDF4] via-[#DCFCE7] to-[#BBF7D0]",
+    dotColor: "#22C55E",
+    border: "border-[#22C55E]/40",
+    pinAccent: "#14532D",
+    pinHead: "from-[#86EFAC] via-[#22C55E] to-[#15803D]",
+    tagClass: "bg-[#14532D]/10 text-[#14532D] border-[#14532D]/20",
+    authorColor: "text-[#14532D]",
+    metaColor: "text-[#166534]",
+    textColor: "text-[#052E16]",
+    heartActiveBg: "bg-[#14532D] text-[#F0FDF4]",
+    heartHover: "hover:bg-[#14532D]/15 text-[#14532D] border-[#14532D]/30",
+  },
+  lilac: {
+    id: "lilac",
+    name: "Soft Lilac",
+    emoji: "💜",
+    bgGradient: "from-[#FAF5FF] via-[#F3E8FF] to-[#E9D5FF]",
+    dotColor: "#A855F7",
+    border: "border-[#A855F7]/40",
+    pinAccent: "#581C87",
+    pinHead: "from-[#D8B4FE] via-[#A855F7] to-[#7E22CE]",
+    tagClass: "bg-[#581C87]/10 text-[#581C87] border-[#581C87]/20",
+    authorColor: "text-[#581C87]",
+    metaColor: "text-[#6B21A8]",
+    textColor: "text-[#3B0764]",
+    heartActiveBg: "bg-[#581C87] text-[#FAF5FF]",
+    heartHover: "hover:bg-[#581C87]/15 text-[#581C87] border-[#581C87]/30",
+  },
+  peach: {
+    id: "peach",
+    name: "Warm Peach",
+    emoji: "🍑",
+    bgGradient: "from-[#FFF7ED] via-[#FFEDD5] to-[#FED7AA]",
+    dotColor: "#FB923C",
+    border: "border-[#FB923C]/40",
+    pinAccent: "#7C2D12",
+    pinHead: "from-[#FDBA74] via-[#FB923C] to-[#C2410C]",
+    tagClass: "bg-[#7C2D12]/10 text-[#7C2D12] border-[#7C2D12]/20",
+    authorColor: "text-[#7C2D12]",
+    metaColor: "text-[#9A3412]",
+    textColor: "text-[#431407]",
+    heartActiveBg: "bg-[#7C2D12] text-[#FFF7ED]",
+    heartHover: "hover:bg-[#7C2D12]/15 text-[#7C2D12] border-[#7C2D12]/30",
+  },
+  sky: {
+    id: "sky",
+    name: "Powder Blue",
+    emoji: "🩵",
+    bgGradient: "from-[#F0F9FF] via-[#E0F2FE] to-[#BAE6FD]",
+    dotColor: "#38BDF8",
+    border: "border-[#38BDF8]/40",
+    pinAccent: "#0C4A6E",
+    pinHead: "from-[#7DD3FC] via-[#38BDF8] to-[#0284C7]",
+    tagClass: "bg-[#0C4A6E]/10 text-[#0C4A6E] border-[#0C4A6E]/20",
+    authorColor: "text-[#0C4A6E]",
+    metaColor: "text-[#075985]",
+    textColor: "text-[#082F49]",
+    heartActiveBg: "bg-[#0C4A6E] text-[#F0F9FF]",
+    heartHover: "hover:bg-[#0C4A6E]/15 text-[#0C4A6E] border-[#0C4A6E]/30",
+  },
+};
+
+const COLOR_KEYS = Object.keys(STICKY_THEMES);
 
 const BLESSING_TAGS = [
   "✨ Eternal Love",
@@ -25,17 +143,20 @@ const RELATIONSHIPS = [
   "Well Wisher",
 ];
 
+// Natural subtle rotation angles for sticky note wall
+const ROTATIONS = [-1.8, 1.5, -2.2, 1.9, -1.2, 1.7, -2.0, 1.4];
+
 export const WishesSection: React.FC = () => {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes);
   const [name, setName] = useState("");
   const [relationship, setRelationship] = useState("Friend of Groom");
   const [blessingTag, setBlessingTag] = useState("✨ Eternal Love");
+  const [selectedColor, setSelectedColor] = useState("yellow");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [likedWishIds, setLikedWishIds] = useState<Record<string, boolean>>({});
 
-  // Fetch live wishes on mount
   useEffect(() => {
     const fetchWishes = async () => {
       try {
@@ -47,7 +168,6 @@ export const WishesSection: React.FC = () => {
           }
         }
       } catch {
-        // Fallback to local storage if API fails
         try {
           const local = localStorage.getItem("wedding_wishes_backup");
           if (local) {
@@ -67,7 +187,7 @@ export const WishesSection: React.FC = () => {
         setLikedWishIds(JSON.parse(storedLikes));
       }
     } catch {
-      // Ignore storage errors
+      // Ignore
     }
   }, []);
 
@@ -81,6 +201,7 @@ export const WishesSection: React.FC = () => {
       name: name.trim(),
       relationship,
       blessingTag,
+      color: selectedColor,
       message: message.trim(),
     };
 
@@ -99,16 +220,16 @@ export const WishesSection: React.FC = () => {
           try {
             localStorage.setItem("wedding_wishes_backup", JSON.stringify(updated));
           } catch {
-            // Ignore storage errors
+            // Ignore
           }
         }
       } else {
-        // Fallback local create if network issue
         const fallbackWish: Wish = {
           id: "wish-local-" + Date.now(),
           name: payload.name,
           relationship: payload.relationship,
           blessingTag: payload.blessingTag,
+          color: payload.color,
           message: payload.message,
           createdAt: new Date().toISOString(),
           likes: 1,
@@ -122,6 +243,7 @@ export const WishesSection: React.FC = () => {
         name: payload.name,
         relationship: payload.relationship,
         blessingTag: payload.blessingTag,
+        color: payload.color,
         message: payload.message,
         createdAt: new Date().toISOString(),
         likes: 1,
@@ -134,7 +256,10 @@ export const WishesSection: React.FC = () => {
       setName("");
       setMessage("");
 
-      // Confetti burst on sending blessing
+      // Automatically advance to next sticky note color for fun
+      const currentIndex = COLOR_KEYS.indexOf(selectedColor);
+      setSelectedColor(COLOR_KEYS[(currentIndex + 1) % COLOR_KEYS.length]);
+
       try {
         confetti({
           particleCount: 50,
@@ -143,7 +268,7 @@ export const WishesSection: React.FC = () => {
           colors: ["#C49A43", "#E5C67C", "#700D20", "#123D25", "#FFFFFF"],
         });
       } catch {
-        // Ignore confetti errors
+        // Ignore
       }
 
       setTimeout(() => setSubmitted(false), 4500);
@@ -185,14 +310,23 @@ export const WishesSection: React.FC = () => {
         year: "numeric",
       });
     } catch {
-      return "Special Occasion";
+      return "Special Day";
     }
+  };
+
+  // Helper to pick theme safely
+  const getTheme = (colorKey?: string, index: number = 0): StickyColorTheme => {
+    if (colorKey && STICKY_THEMES[colorKey]) {
+      return STICKY_THEMES[colorKey];
+    }
+    const fallbackKey = COLOR_KEYS[index % COLOR_KEYS.length];
+    return STICKY_THEMES[fallbackKey];
   };
 
   return (
     <section
       id="wishes"
-      className="relative py-20 px-4 bg-gradient-to-b from-[#FFF9ED] via-[#FBF4E6] to-[#FFF9ED] overflow-hidden"
+      className="relative py-20 px-4 bg-gradient-to-b from-[#FFF9ED] via-[#F8EFE0] to-[#FFF9ED] overflow-hidden"
     >
       <FloralCorner position="top-left" size={170} />
       <FloralCorner position="bottom-right" size={170} />
@@ -212,11 +346,11 @@ export const WishesSection: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5" />
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-playfair font-semibold text-[#123D25] mt-1">
-            Guest Book
+            Guest Book Sticky Wall
           </h2>
           <GoldDivider width={190} variant="flourish" className="mx-auto mt-2" />
           <p className="text-xs sm:text-sm font-serif italic text-[#76685A] mt-2 max-w-md mx-auto">
-            Leave your warm congratulations, prayers, and words of love for Vishnuraj &amp; Josly as they embark on this sacred journey.
+            Pin your heartfelt congratulations and prayers on Vishnuraj &amp; Josly&apos;s wedding keepsake board.
           </p>
         </motion.div>
 
@@ -228,7 +362,7 @@ export const WishesSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="max-w-2xl mx-auto mb-16 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#FFFDF8] to-[#FAF2E2] border-2 border-[#C49A43]/60 shadow-[0_15px_45px_rgba(196,154,67,0.15)] relative"
         >
-          {/* Subtle Decorative Corner Accent Leaf */}
+          {/* Decorative Corner Leaf Accents */}
           <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#C49A43] rounded-tl-sm pointer-events-none" />
           <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#C49A43] rounded-tr-sm pointer-events-none" />
           <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#C49A43] rounded-bl-sm pointer-events-none" />
@@ -239,7 +373,7 @@ export const WishesSection: React.FC = () => {
               <MessageSquareHeart className="w-4 h-4" />
             </span>
             <h3 className="font-playfair text-xl sm:text-2xl font-semibold text-[#123D25]">
-              Write a Blessing
+              Leave a Sticky Note
             </h3>
           </div>
 
@@ -279,6 +413,38 @@ export const WishesSection: React.FC = () => {
               </div>
             </div>
 
+            {/* Note Color Palette Picker */}
+            <div>
+              <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5 flex items-center gap-1.5">
+                <Palette className="w-3.5 h-3.5 text-[#C49A43]" />
+                Choose Note Color
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {COLOR_KEYS.map((key) => {
+                  const theme = STICKY_THEMES[key];
+                  const isSelected = selectedColor === key;
+                  return (
+                    <button
+                      type="button"
+                      key={key}
+                      onClick={() => setSelectedColor(key)}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-serif transition-all border ${
+                        isSelected
+                          ? "ring-2 ring-[#700D20] scale-105 shadow-md font-semibold bg-white border-[#700D20]"
+                          : "opacity-80 hover:opacity-100 hover:scale-102 bg-white/70 border-gray-300"
+                      }`}
+                    >
+                      <span
+                        className="w-3 h-3 rounded-full shadow-xs"
+                        style={{ backgroundColor: theme.dotColor }}
+                      />
+                      <span>{theme.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Blessing Tag Selector */}
             <div>
               <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5">
@@ -306,7 +472,7 @@ export const WishesSection: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium">
-                  Your Message for the Couple *
+                  Your Sticky Note Message *
                 </label>
                 <span className="text-[11px] text-[#A49483]">
                   {message.length}/500
@@ -318,7 +484,7 @@ export const WishesSection: React.FC = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 maxLength={500}
-                placeholder="Share your prayers, memories, or wishes for Vishnuraj &amp; Josly..."
+                placeholder="Write your prayers, blessings, or sweet memories for Vishnuraj &amp; Josly..."
                 className="w-full px-4 py-2.5 rounded-xl bg-[#FFFDF9] border border-[#C49A43]/50 focus:border-[#700D20] focus:ring-1 focus:ring-[#700D20] text-sm text-[#2F261F] placeholder-[#A49483] outline-none transition-all resize-none leading-relaxed"
               />
             </div>
@@ -334,7 +500,7 @@ export const WishesSection: React.FC = () => {
                     className="flex items-center gap-1.5 text-xs font-serif text-[#123D25] font-medium"
                   >
                     <CheckCircle2 className="w-4 h-4 text-[#123D25]" />
-                    <span>Your blessing has been posted!</span>
+                    <span>Your note has been pinned to the board!</span>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -345,10 +511,10 @@ export const WishesSection: React.FC = () => {
                 className="ml-auto inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#700D20] to-[#500A17] text-[#FFF9ED] border border-[#C49A43]/60 text-xs sm:text-sm font-serif tracking-wider shadow-md hover:shadow-lg transition-all duration-300 hover:scale-102 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isSubmitting ? (
-                  <span>Sending...</span>
+                  <span>Pinning Note...</span>
                 ) : (
                   <>
-                    <span>Send Blessings</span>
+                    <span>Pin Note to Board</span>
                     <Send className="w-3.5 h-3.5" />
                   </>
                 )}
@@ -357,70 +523,107 @@ export const WishesSection: React.FC = () => {
           </form>
         </motion.div>
 
-        {/* Live Wishes Cards Wall */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Live Colorful Sticky Notes Wall */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4 pb-8">
           <AnimatePresence>
-            {wishes.map((item, idx) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.05 }}
-                className="relative p-5 sm:p-6 rounded-2xl bg-[#FFFDF7] border border-[#C49A43]/40 shadow-[0_8px_25px_rgba(196,154,67,0.1)] flex flex-col justify-between hover:border-[#C49A43] hover:shadow-[0_12px_32px_rgba(196,154,67,0.2)] transition-all duration-300 group"
-              >
-                {/* Gold Inner Hairline Border */}
-                <div className="absolute inset-1.5 border border-[#C49A43]/20 rounded-xl pointer-events-none" />
+            {wishes.map((item, idx) => {
+              const theme = getTheme(item.color, idx);
+              const rotation = ROTATIONS[idx % ROTATIONS.length];
 
-                <div>
-                  {/* Top Header: Tag & Date */}
-                  <div className="flex items-center justify-between mb-3 relative z-10">
-                    <span className="text-[11px] font-serif px-2.5 py-0.5 rounded-full bg-[#123D25]/10 text-[#123D25] border border-[#123D25]/20 font-medium">
-                      {item.blessingTag || "✨ Blessing"}
-                    </span>
-                    <span className="text-[11px] font-serif text-[#A49483]">
-                      {formatDate(item.createdAt)}
-                    </span>
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  style={{
+                    rotate: `${rotation}deg`,
+                  }}
+                  whileHover={{
+                    scale: 1.04,
+                    rotate: 0,
+                    y: -8,
+                    zIndex: 35,
+                    transition: { duration: 0.25, ease: "easeOut" },
+                  }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  className={`relative p-6 pt-7 rounded-2xl bg-gradient-to-br ${theme.bgGradient} ${theme.border} border shadow-[0_12px_28px_rgba(0,0,0,0.08),0_4px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.16)] select-none group`}
+                >
+                  {/* Realistic Metallic Gold / Gem Pushpin at Top Center */}
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none drop-shadow-md">
+                    <div
+                      className={`w-5 h-5 rounded-full bg-gradient-to-br ${theme.pinHead} shadow-[0_2px_4px_rgba(0,0,0,0.3)] border border-white/60 relative flex items-center justify-center`}
+                    >
+                      {/* Pushpin Specular Reflection Dot */}
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/90 blur-[0.2px] -mt-1 -ml-1" />
+                    </div>
+                    {/* Pushpin Shadow */}
+                    <div className="w-1.5 h-1.5 bg-black/30 -mt-0.5 rounded-full blur-[0.5px]" />
                   </div>
 
-                  {/* Blessing Quote */}
-                  <p className="text-xs sm:text-sm font-serif italic text-[#2F261F] leading-relaxed relative z-10 mb-4">
-                    &ldquo;{item.message}&rdquo;
-                  </p>
-                </div>
+                  {/* Faint Subtle Tape Strip at Top (Vintage Stationery Feel) */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-3 bg-white/35 backdrop-blur-[1px] border-x border-b border-white/40 rounded-b-sm pointer-events-none" />
 
-                {/* Bottom Footer: Author & Heart Like Counter */}
-                <div className="pt-3 border-t border-[#C49A43]/25 flex items-center justify-between relative z-10">
+                  {/* Note Content */}
                   <div>
-                    <h4 className="text-xs sm:text-sm font-playfair font-semibold text-[#700D20]">
-                      {item.name}
-                    </h4>
-                    <p className="text-[10px] sm:text-[11px] font-serif text-[#76685A]">
-                      {item.relationship}
+                    {/* Header: Blessing Tag & Formatted Date */}
+                    <div className="flex items-center justify-between mb-3 relative z-10">
+                      <span
+                        className={`text-[11px] font-serif px-2.5 py-0.5 rounded-full border font-medium ${theme.tagClass}`}
+                      >
+                        {item.blessingTag || "✨ Blessing"}
+                      </span>
+                      <span className={`text-[11px] font-serif ${theme.metaColor} opacity-80`}>
+                        {formatDate(item.createdAt)}
+                      </span>
+                    </div>
+
+                    {/* Handwritten Style Blessing Message */}
+                    <p
+                      className={`text-sm sm:text-[15px] font-serif italic ${theme.textColor} leading-relaxed relative z-10 mb-5 drop-shadow-[0_1px_0_rgba(255,255,255,0.4)]`}
+                    >
+                      &ldquo;{item.message}&rdquo;
                     </p>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleLike(item.id)}
-                    aria-label={`Like wish from ${item.name}`}
-                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs transition-all ${
-                      likedWishIds[item.id]
-                        ? "bg-[#700D20] text-[#FFF9ED] scale-105"
-                        : "bg-[#FFF9ED] text-[#700D20] border border-[#C49A43]/40 hover:border-[#700D20] hover:bg-[#700D20]/10"
-                    }`}
-                  >
-                    <Heart
-                      className={`w-3.5 h-3.5 ${
-                        likedWishIds[item.id] ? "fill-current" : ""
+                  {/* Footer: Guest Name & Interactive Heart Reaction */}
+                  <div className="pt-3 border-t border-black/10 flex items-center justify-between relative z-10">
+                    <div>
+                      <h4
+                        className={`text-sm font-playfair font-bold ${theme.authorColor} tracking-wide`}
+                      >
+                        {item.name}
+                      </h4>
+                      <p className={`text-[11px] font-serif ${theme.metaColor}`}>
+                        {item.relationship}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleLike(item.id)}
+                      aria-label={`Like wish from ${item.name}`}
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all shadow-xs ${
+                        likedWishIds[item.id]
+                          ? `${theme.heartActiveBg} scale-105 shadow-sm`
+                          : `bg-white/80 ${theme.heartHover} border`
                       }`}
-                    />
-                    <span className="font-sans font-medium text-[11px]">
-                      {item.likes || 1}
-                    </span>
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                    >
+                      <Heart
+                        className={`w-3.5 h-3.5 ${
+                          likedWishIds[item.id] ? "fill-current" : ""
+                        }`}
+                      />
+                      <span className="font-sans font-semibold text-[11px]">
+                        {item.likes || 1}
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Soft Realistic Curled Bottom-Right Shadow Accent */}
+                  <div className="absolute bottom-0 right-0 w-8 h-8 rounded-br-2xl bg-gradient-to-tl from-black/5 to-transparent pointer-events-none" />
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </div>
       </div>

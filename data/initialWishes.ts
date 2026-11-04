@@ -4,6 +4,7 @@ export interface Wish {
   relationship: string;
   message: string;
   blessingTag: string;
+  color?: string;
   createdAt: string;
   likes: number;
 }
@@ -16,6 +17,7 @@ export const initialWishes: Wish[] = [
     message:
       "Wishing you both a lifetime of shared dreams, laughter, and divine grace. May your union be as auspicious and enduring as tradition. Heartfelt congratulations Vishnuraj & Josly!",
     blessingTag: "Eternal Love",
+    color: "yellow",
     createdAt: "2026-11-01T10:30:00.000Z",
     likes: 12,
   },
@@ -26,6 +28,7 @@ export const initialWishes: Wish[] = [
     message:
       "So overjoyed to celebrate this unforgettable chapter with you in Vaikom! May every tomorrow bring deeper friendship and boundless joy. Cheers to a wonderful lifetime ahead!",
     blessingTag: "Joy & Happiness",
+    color: "rose",
     createdAt: "2026-11-02T14:15:00.000Z",
     likes: 9,
   },
@@ -36,7 +39,9 @@ export const initialWishes: Wish[] = [
     message:
       "Dearest Josly and Vishnuraj, may God shower your marriage with abundant peace, good health, and heavenly blessings. So proud and delighted for you both!",
     blessingTag: "Divine Blessings",
+    color: "sage",
     createdAt: "2026-11-03T09:40:00.000Z",
     likes: 15,
   },
 ];
+

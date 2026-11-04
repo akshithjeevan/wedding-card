@@ -40,7 +40,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, relationship, message, blessingTag } = body;
+    const { name, relationship, message, blessingTag, color } = body;
 
     if (!name || typeof name !== "string" || !name.trim()) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -56,6 +56,7 @@ export async function POST(req: NextRequest) {
       relationship: (relationship || "Well Wisher").trim().slice(0, 50),
       message: message.trim().slice(0, 500),
       blessingTag: (blessingTag || "Blessings & Love").trim().slice(0, 30),
+      color: typeof color === "string" ? color : "yellow",
       createdAt: new Date().toISOString(),
       likes: 1,
     };
@@ -124,3 +125,4 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
