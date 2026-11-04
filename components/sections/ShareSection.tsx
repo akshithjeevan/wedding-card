@@ -83,34 +83,25 @@ export const ShareSection: React.FC = () => {
           <GoldDivider width={160} variant="diamond" className="mx-auto mt-2" />
         </motion.div>
 
-        {/* Circular Skeuomorphic Gold Medallion Icon Buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 w-full max-w-xl">
+        {/* Circular Gold Icon Buttons */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 w-full max-w-lg">
           {actions.map((item, idx) => {
             const Icon = item.icon;
             const content = (
-              <div className="flex flex-col items-center group cursor-pointer select-none">
+              <div className="flex flex-col items-center group cursor-pointer">
                 <div
-                  className={`skeuo-gold-button w-16 h-16 rounded-full flex items-center justify-center ${
-                    item.active ? "active-pressed" : ""
+                  className={`w-14 h-14 sm:w-16 sm:h-16 skeuomorphic-icon-btn ${
+                    item.active ? "is-active" : ""
                   }`}
                 >
-                  {/* Outer Bevel Specular Arc Highlight */}
-                  <div className="absolute inset-0.5 rounded-full bg-gradient-to-b from-white/60 via-transparent to-black/15 pointer-events-none" />
-
-                  {/* Minted Inner Delicate Groove Ring */}
-                  <div className="absolute inset-1.5 rounded-full border border-[#C49A43]/40 group-hover:border-[#FFF8E7]/70 pointer-events-none transition-colors" />
-
-                  {/* Stamped / Engraved Skeuomorphic Icon */}
-                  <Icon
-                    className={`skeuo-icon w-6 h-6 relative z-10 ${
-                      item.active ? "!text-[#E5C67C]" : ""
-                    }`}
-                  />
+                  {/* Subtle inner concentric coin groove ring */}
+                  <span className="skeuo-inner-ring" />
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 skeuo-icon relative z-10" />
                 </div>
-                <span className="text-xs sm:text-sm font-serif font-semibold text-[#123D25] mt-2.5 group-hover:text-[#700D20] transition-colors">
+                <span className="text-xs font-serif font-semibold text-[#123D25] mt-2.5 group-hover:text-[#700D20] transition-colors">
                   {item.name}
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-sans text-[#76685A] mt-0.5">
+                <span className="text-[10px] font-sans text-[#76685A]">
                   {item.description}
                 </span>
               </div>
