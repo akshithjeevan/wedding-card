@@ -100,27 +100,8 @@ export const MusicPlayer: React.FC = () => {
       }
     };
 
-    // If the browser already has user activation, attempt playback
-    if (typeof navigator !== "undefined" && (navigator as { userActivation?: { hasBeenActive?: boolean } }).userActivation?.hasBeenActive) {
-      startAudio();
-    }
-
-    // Unlock and start audio on the very first user interaction anywhere on the page
-    const handlePageInteraction = () => {
-      if (isPlayingRef.current) return;
-      startAudio();
-    };
-    window.addEventListener("pointerdown", handlePageInteraction, { once: true, passive: true });
-    window.addEventListener("click", handlePageInteraction, { once: true, passive: true });
-    window.addEventListener("touchstart", handlePageInteraction, { once: true, passive: true });
-    window.addEventListener("keydown", handlePageInteraction, { once: true, passive: true });
-
     return () => {
       window.removeEventListener("wedding-play-music", handleRemotePlay);
-      window.removeEventListener("pointerdown", handlePageInteraction);
-      window.removeEventListener("click", handlePageInteraction);
-      window.removeEventListener("touchstart", handlePageInteraction);
-      window.removeEventListener("keydown", handlePageInteraction);
       delete (window as unknown as { __playWeddingMusic?: () => void }).__playWeddingMusic;
       audio.removeEventListener("play", handlePlay);
       audio.removeEventListener("pause", handlePause);
