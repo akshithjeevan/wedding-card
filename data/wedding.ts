@@ -52,6 +52,14 @@ export interface WeddingConfig {
       endTime: string;
     };
   };
+  photoDrop: {
+    title: string;
+    subtitle: string;
+    tagline: string;
+    driveUrl: string;
+    hashtag: string;
+    folderName: string;
+  };
 }
 
 export const weddingData: WeddingConfig = {
@@ -113,6 +121,17 @@ export const weddingData: WeddingConfig = {
       startTime: "20261121T061500Z", // 11:45 AM IST is 06:15 AM UTC
       endTime: "20261121T063000Z",   // 12:00 PM IST is 06:30 AM UTC
     },
+  },
+  photoDrop: {
+    title: "Snap & Share",
+    subtitle: "Guest Photo Drop & Memories Drive",
+    tagline:
+      "Be our honorary wedding photographer! Help Vishnuraj & Josly collect every candid smile, spontaneous laughter, and behind-the-scenes memory from their wedding day.",
+    // Replace with your shared Google Drive folder link anytime:
+    driveUrl:
+      "https://drive.google.com/drive/folders/1wzP8YhN_VishnurajJoslyWeddingDrive2026?usp=sharing",
+    hashtag: "#VishnuWedsJosly",
+    folderName: "Vishnuraj & Josly Wedding Memories",
   },
 };
 
