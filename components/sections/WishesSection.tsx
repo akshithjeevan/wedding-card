@@ -568,10 +568,10 @@ export const WishesSection: React.FC = () => {
                         ],
                       }}
                       transition={{
-                        duration: 4.8 + (idx % 4) * 0.4,
+                        duration: 6.5 + (idx % 4) * 0.5,
                         repeat: Infinity,
                         ease: "easeInOut",
-                        delay: (idx % 6) * 0.4,
+                        delay: (idx % 6) * 0.5,
                       }}
                       whileHover={{
                         scale: 1.05,

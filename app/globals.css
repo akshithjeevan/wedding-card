@@ -102,7 +102,7 @@ body {
 .water-flow-track {
   display: flex;
   width: max-content;
-  animation: waterFlowLeftToRight 55s linear infinite;
+  animation: waterFlowLeftToRight 95s linear infinite;
   will-change: transform;
 }
 
