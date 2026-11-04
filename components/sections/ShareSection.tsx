@@ -88,20 +88,23 @@ export const ShareSection: React.FC = () => {
           {actions.map((item, idx) => {
             const Icon = item.icon;
             const content = (
-              <div className="flex flex-col items-center group cursor-pointer">
-                <div
+              <div className="flex flex-col items-center group cursor-pointer select-none">
+                <motion.div
+                  whileHover={{ scale: 1.08, y: -4 }}
+                  whileTap={{ scale: 0.94, y: 2 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 20 }}
                   className={`skeuomorphic-btn w-14 h-14 rounded-full border-2 flex items-center justify-center overflow-hidden ${
                     item.active
                       ? "bg-[#123D25] text-[#E5C67C] border-[#E5C67C] scale-105 shadow-[inset_0_2px_3px_rgba(255,255,255,0.6),inset_0_-3px_4px_rgba(0,0,0,0.5)]"
                       : "bg-[#FFFDF8] text-[#700D20] border-[#C49A43]/70"
                   }`}
                 >
-                  {/* Subtle Curved High-Gloss Specular Highlight (Skeuomorphic Glass Dome) */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/45 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  {/* High-Gloss Specular Highlight Dome (Skeuomorphic Glass/Metallic) */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/45 via-white/10 to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-200 pointer-events-none" />
 
-                  <Icon className="w-5 h-5 transition-transform duration-300 relative z-10" />
-                </div>
-                <span className="text-xs font-serif font-semibold text-[#123D25] mt-2.5 group-hover:text-[#700D20] transition-colors">
+                  <Icon className="w-5 h-5 transition-transform duration-200 relative z-10" />
+                </motion.div>
+                <span className="text-xs font-serif font-semibold text-[#123D25] mt-2.5 group-hover:text-[#700D20] group-active:text-[#700D20] transition-colors">
                   {item.name}
                 </span>
                 <span className="text-[10px] font-sans text-[#76685A]">
