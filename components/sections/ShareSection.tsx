@@ -83,25 +83,34 @@ export const ShareSection: React.FC = () => {
           <GoldDivider width={160} variant="diamond" className="mx-auto mt-2" />
         </motion.div>
 
-        {/* Circular Gold Icon Buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 w-full max-w-lg">
+        {/* Circular Skeuomorphic Gold Medallion Icon Buttons */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 w-full max-w-xl">
           {actions.map((item, idx) => {
             const Icon = item.icon;
             const content = (
-              <div className="flex flex-col items-center group cursor-pointer">
+              <div className="flex flex-col items-center group cursor-pointer select-none">
                 <div
-                  className={`w-14 h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 shadow-md ${
-                    item.active
-                      ? "bg-[#123D25] text-[#E5C67C] border-[#C49A43] scale-105"
-                      : "bg-[#FFFDF8] text-[#700D20] border-[#C49A43] group-hover:bg-[#123D25] group-hover:text-[#E5C67C] group-hover:scale-110"
+                  className={`skeuo-gold-button w-16 h-16 rounded-full flex items-center justify-center ${
+                    item.active ? "active-pressed" : ""
                   }`}
                 >
-                  <Icon className="w-5 h-5" />
+                  {/* Outer Bevel Specular Arc Highlight */}
+                  <div className="absolute inset-0.5 rounded-full bg-gradient-to-b from-white/60 via-transparent to-black/15 pointer-events-none" />
+
+                  {/* Minted Inner Delicate Groove Ring */}
+                  <div className="absolute inset-1.5 rounded-full border border-[#C49A43]/40 group-hover:border-[#FFF8E7]/70 pointer-events-none transition-colors" />
+
+                  {/* Stamped / Engraved Skeuomorphic Icon */}
+                  <Icon
+                    className={`skeuo-icon w-6 h-6 relative z-10 ${
+                      item.active ? "!text-[#E5C67C]" : ""
+                    }`}
+                  />
                 </div>
-                <span className="text-xs font-serif font-semibold text-[#123D25] mt-2 group-hover:text-[#700D20] transition-colors">
+                <span className="text-xs sm:text-sm font-serif font-semibold text-[#123D25] mt-2.5 group-hover:text-[#700D20] transition-colors">
                   {item.name}
                 </span>
-                <span className="text-[10px] font-sans text-[#76685A]">
+                <span className="text-[10px] sm:text-[11px] font-sans text-[#76685A] mt-0.5">
                   {item.description}
                 </span>
               </div>

@@ -109,3 +109,58 @@ body {
 .water-flow-track:hover {
   animation-play-state: paused;
 }
+
+/* Skeuomorphic 3D Royal Gold Medallion Button */
+.skeuo-gold-button {
+  position: relative;
+  border-radius: 9999px;
+  background: linear-gradient(145deg, #FFFDF8 0%, #F7EBD6 60%, #EBD4B0 100%);
+  border: 2px solid #C49A43;
+  box-shadow: 
+    0 5px 12px rgba(0, 0, 0, 0.07),
+    0 1px 3px rgba(196, 154, 67, 0.2),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 3px rgba(158, 122, 47, 0.25);
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.skeuo-gold-button:hover {
+  transform: translateY(-5px) scale(1.08);
+  background: radial-gradient(circle at 35% 30%, #FFFDE8 0%, #F9E5A8 25%, #E5C67C 55%, #C49A43 80%, #997424 100%);
+  border-color: #F8E4A6;
+  box-shadow: 
+    0 18px 32px -4px rgba(196, 154, 67, 0.52),
+    0 8px 16px -2px rgba(112, 13, 32, 0.22),
+    0 3px 6px rgba(0, 0, 0, 0.14),
+    inset 0 2.5px 4px rgba(255, 255, 255, 0.95),
+    inset 0 -3.5px 6px rgba(112, 13, 32, 0.38);
+}
+
+.skeuo-gold-button:active {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: 
+    0 4px 8px rgba(196, 154, 67, 0.3),
+    inset 0 2.5px 6px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.skeuo-gold-button.active-pressed {
+  background: radial-gradient(circle at 35% 30%, #1A4D30 0%, #123D25 60%, #0A2617 100%);
+  border-color: #C49A43;
+  color: #E5C67C;
+  box-shadow: 
+    0 8px 20px rgba(18, 61, 37, 0.35),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.skeuo-icon {
+  transition: all 0.35s ease;
+  color: #700D20;
+}
+
+.skeuo-gold-button:hover .skeuo-icon {
+  color: #520917;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.85)) drop-shadow(0 -1px 0 rgba(74, 14, 24, 0.45));
+  transform: scale(1.12);
+}
