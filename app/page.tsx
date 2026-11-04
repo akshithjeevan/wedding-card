@@ -10,6 +10,7 @@ import { CountdownSection } from "@/components/sections/CountdownSection";
 import { WeddingDetails } from "@/components/sections/WeddingDetails";
 import { VenueSection } from "@/components/sections/VenueSection";
 import { FamilySection } from "@/components/sections/FamilySection";
+import { WishesSection } from "@/components/sections/WishesSection";
 import { RegardsSection } from "@/components/sections/RegardsSection";
 import { DepartureSection } from "@/components/sections/DepartureSection";
 import { ShareSection } from "@/components/sections/ShareSection";
@@ -55,6 +56,7 @@ export default function Home() {
         <WeddingDetails />
         <VenueSection />
         <FamilySection />
+        <WishesSection />
         <RegardsSection />
         <DepartureSection />
         <ShareSection />
