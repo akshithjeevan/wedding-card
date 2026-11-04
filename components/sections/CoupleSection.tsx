@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FloralCorner } from "@/components/decorations/FloralCorner";
 import { GoldDivider } from "@/components/decorations/GoldDivider";
 import { weddingData } from "@/data/wedding";
-import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { Heart } from "lucide-react";
 
 export const CoupleSection: React.FC = () => {
   const [activePhoto, setActivePhoto] = useState(0);
@@ -40,14 +40,6 @@ export const CoupleSection: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [isPaused, couplePhotos.length]);
-
-  const nextPhoto = () => {
-    setActivePhoto((prev) => (prev + 1) % couplePhotos.length);
-  };
-
-  const prevPhoto = () => {
-    setActivePhoto((prev) => (prev - 1 + couplePhotos.length) % couplePhotos.length);
-  };
 
   return (
     <section
@@ -124,32 +116,6 @@ export const CoupleSection: React.FC = () => {
                   </div>
                 </motion.div>
               </AnimatePresence>
-
-              {/* Prev Button */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  prevPhoto();
-                }}
-                aria-label="Previous photo"
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#123D25]/60 hover:bg-[#123D25]/90 text-[#FFF9ED] border border-[#C49A43]/60 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hover:scale-110 backdrop-blur-sm shadow-md"
-              >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-
-              {/* Next Button */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  nextPhoto();
-                }}
-                aria-label="Next photo"
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#123D25]/60 hover:bg-[#123D25]/90 text-[#FFF9ED] border border-[#C49A43]/60 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hover:scale-110 backdrop-blur-sm shadow-md"
-              >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
             </div>
 
             {/* Corner Gold Leaf Accents */}
