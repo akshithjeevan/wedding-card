@@ -573,7 +573,7 @@ export const WishesSection: React.FC = () => {
         {/* Stream Hint */}
         <div className="flex items-center justify-center gap-2 mb-6 text-xs font-serif text-[#76685A] italic text-center px-4">
           <span className="w-8 h-px bg-[#C49A43]/40 hidden sm:inline-block" />
-          <span>🌊 Flowing river of blessings • Hover any note to pause &amp; read</span>
+          <span>Flowing river of blessings • Hover any note to pause &amp; read</span>
           <span className="w-8 h-px bg-[#C49A43]/40 hidden sm:inline-block" />
         </div>
 
