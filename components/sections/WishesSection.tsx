@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FloralCorner } from "@/components/decorations/FloralCorner";
 import { GoldDivider } from "@/components/decorations/GoldDivider";
 import { Wish, initialWishes } from "@/data/initialWishes";
-import { Heart, Send, Sparkles, MessageSquareHeart, CheckCircle2, Palette } from "lucide-react";
+import { Heart, Send, Sparkles, MessageSquareHeart, CheckCircle2, Palette, X } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export interface StickyColorTheme {
@@ -148,6 +148,7 @@ const ROTATIONS = [-1.8, 1.5, -2.2, 1.9, -1.2, 1.7, -2.0, 1.4];
 
 export const WishesSection: React.FC = () => {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [name, setName] = useState("");
   const [relationship, setRelationship] = useState("Friend of Groom");
   const [blessingTag, setBlessingTag] = useState("✨ Eternal Love");
@@ -271,7 +272,10 @@ export const WishesSection: React.FC = () => {
         // Ignore
       }
 
-      setTimeout(() => setSubmitted(false), 4500);
+      setTimeout(() => {
+        setSubmitted(false);
+        setIsFormOpen(false);
+      }, 3000);
     }
   };
 
@@ -354,174 +358,217 @@ export const WishesSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Wish Submission Form Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-2xl mx-auto mb-16 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#FFFDF8] to-[#FAF2E2] border-2 border-[#C49A43]/60 shadow-[0_15px_45px_rgba(196,154,67,0.15)] relative"
-        >
-          {/* Decorative Corner Leaf Accents */}
-          <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#C49A43] rounded-tl-sm pointer-events-none" />
-          <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#C49A43] rounded-tr-sm pointer-events-none" />
-          <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#C49A43] rounded-bl-sm pointer-events-none" />
-          <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#C49A43] rounded-br-sm pointer-events-none" />
-
-          <div className="flex items-center gap-2 mb-5">
-            <span className="p-2 rounded-full bg-[#123D25] text-[#E5C67C] border border-[#C49A43]">
+        {/* Button to Open Sticky Note Form */}
+        <div className="flex justify-center mb-10">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={() => setIsFormOpen((prev) => !prev)}
+            className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#123D25] via-[#1A4D30] to-[#123D25] text-[#FFF9ED] border-2 border-[#C49A43] shadow-[0_10px_30px_rgba(18,61,37,0.25)] hover:shadow-[0_15px_40px_rgba(196,154,67,0.35)] transition-all cursor-pointer"
+          >
+            <span className="p-1.5 rounded-full bg-[#C49A43]/20 text-[#E5C67C] group-hover:scale-110 transition-transform">
               <MessageSquareHeart className="w-4 h-4" />
             </span>
-            <h3 className="font-playfair text-xl sm:text-2xl font-semibold text-[#123D25]">
-              Leave a Sticky Note
-            </h3>
-          </div>
+            <span className="font-serif tracking-wider text-sm sm:text-base font-medium">
+              {isFormOpen ? "Close Note Form" : "Leave a Sticky Note"}
+            </span>
+            <span className="text-[#E5C67C] text-sm group-hover:translate-x-1 transition-transform">
+              {isFormOpen ? "✕" : "✍️"}
+            </span>
+          </motion.button>
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Guest Name & Relationship */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5">
-                  Your Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Rahul &amp; Anjali"
-                  maxLength={60}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#FFFDF9] border border-[#C49A43]/50 focus:border-[#700D20] focus:ring-1 focus:ring-[#700D20] text-sm text-[#2F261F] placeholder-[#A49483] outline-none transition-all"
-                />
+        {/* Animated Expandable Wish Submission Form Card */}
+        <AnimatePresence>
+          {isFormOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.96 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="max-w-2xl mx-auto mb-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#FFFDF8] to-[#FAF2E2] border-2 border-[#C49A43]/60 shadow-[0_15px_45px_rgba(196,154,67,0.18)] relative"
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setIsFormOpen(false)}
+                aria-label="Close sticky note form"
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#123D25]/10 hover:bg-[#700D20] text-[#700D20] hover:text-[#FFF9ED] border border-[#C49A43]/40 flex items-center justify-center transition-all cursor-pointer shadow-xs"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Decorative Corner Leaf Accents */}
+              <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#C49A43] rounded-tl-sm pointer-events-none" />
+              <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#C49A43] rounded-tr-sm pointer-events-none" />
+              <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#C49A43] rounded-bl-sm pointer-events-none" />
+              <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#C49A43] rounded-br-sm pointer-events-none" />
+
+              <div className="flex items-center gap-2 mb-5">
+                <span className="p-2 rounded-full bg-[#123D25] text-[#E5C67C] border border-[#C49A43]">
+                  <MessageSquareHeart className="w-4 h-4" />
+                </span>
+                <h3 className="font-playfair text-xl sm:text-2xl font-semibold text-[#123D25]">
+                  Leave a Sticky Note
+                </h3>
               </div>
 
-              <div>
-                <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5">
-                  Your Connection
-                </label>
-                <select
-                  value={relationship}
-                  onChange={(e) => setRelationship(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#FFFDF9] border border-[#C49A43]/50 focus:border-[#700D20] focus:ring-1 focus:ring-[#700D20] text-sm text-[#2F261F] outline-none transition-all cursor-pointer"
-                >
-                  {RELATIONSHIPS.map((rel) => (
-                    <option key={rel} value={rel}>
-                      {rel}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Guest Name & Relationship */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5">
+                      Your Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="e.g. Rahul &amp; Anjali"
+                      maxLength={60}
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#FFFDF9] border border-[#C49A43]/50 focus:border-[#700D20] focus:ring-1 focus:ring-[#700D20] text-sm text-[#2F261F] placeholder-[#A49483] outline-none transition-all"
+                    />
+                  </div>
 
-            {/* Note Color Palette Picker */}
-            <div>
-              <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5 flex items-center gap-1.5">
-                <Palette className="w-3.5 h-3.5 text-[#C49A43]" />
-                Choose Note Color
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {COLOR_KEYS.map((key) => {
-                  const theme = STICKY_THEMES[key];
-                  const isSelected = selectedColor === key;
-                  return (
+                  <div>
+                    <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5">
+                      Your Connection
+                    </label>
+                    <select
+                      value={relationship}
+                      onChange={(e) => setRelationship(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#FFFDF9] border border-[#C49A43]/50 focus:border-[#700D20] focus:ring-1 focus:ring-[#700D20] text-sm text-[#2F261F] outline-none transition-all cursor-pointer"
+                    >
+                      {RELATIONSHIPS.map((rel) => (
+                        <option key={rel} value={rel}>
+                          {rel}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Note Color Palette Picker */}
+                <div>
+                  <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5 flex items-center gap-1.5">
+                    <Palette className="w-3.5 h-3.5 text-[#C49A43]" />
+                    Choose Note Color
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {COLOR_KEYS.map((key) => {
+                      const theme = STICKY_THEMES[key];
+                      const isSelected = selectedColor === key;
+                      return (
+                        <button
+                          type="button"
+                          key={key}
+                          onClick={() => setSelectedColor(key)}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-serif transition-all border ${
+                            isSelected
+                              ? "ring-2 ring-[#700D20] scale-105 shadow-md font-semibold bg-white border-[#700D20]"
+                              : "opacity-80 hover:opacity-100 hover:scale-102 bg-white/70 border-gray-300"
+                          }`}
+                        >
+                          <span
+                            className="w-3 h-3 rounded-full shadow-xs"
+                            style={{ backgroundColor: theme.dotColor }}
+                          />
+                          <span>{theme.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Blessing Tag Selector */}
+                <div>
+                  <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5">
+                    Blessing Theme
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {BLESSING_TAGS.map((tag) => (
+                      <button
+                        type="button"
+                        key={tag}
+                        onClick={() => setBlessingTag(tag)}
+                        className={`px-3 py-1 rounded-full text-xs font-serif transition-all border ${
+                          blessingTag === tag
+                            ? "bg-[#123D25] text-[#E5C67C] border-[#C49A43] shadow-sm scale-102"
+                            : "bg-[#FFF9ED] text-[#76685A] border-[#C49A43]/30 hover:border-[#C49A43]"
+                        }`}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Message Body */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium">
+                      Your Sticky Note Message *
+                    </label>
+                    <span className="text-[11px] text-[#A49483]">
+                      {message.length}/500
+                    </span>
+                  </div>
+                  <textarea
+                    required
+                    rows={3}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    maxLength={500}
+                    placeholder="Write your prayers, blessings, or sweet memories for Vishnuraj &amp; Josly..."
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#FFFDF9] border border-[#C49A43]/50 focus:border-[#700D20] focus:ring-1 focus:ring-[#700D20] text-sm text-[#2F261F] placeholder-[#A49483] outline-none transition-all resize-none leading-relaxed"
+                  />
+                </div>
+
+                {/* Submit Button & Confirmation */}
+                <div className="flex items-center justify-between pt-2">
+                  <AnimatePresence>
+                    {submitted && (
+                      <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0 }}
+                        className="flex items-center gap-1.5 text-xs font-serif text-[#123D25] font-medium"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-[#123D25]" />
+                        <span>Your note has been pinned to the board!</span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <div className="ml-auto flex items-center gap-3">
                     <button
                       type="button"
-                      key={key}
-                      onClick={() => setSelectedColor(key)}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-serif transition-all border ${
-                        isSelected
-                          ? "ring-2 ring-[#700D20] scale-105 shadow-md font-semibold bg-white border-[#700D20]"
-                          : "opacity-80 hover:opacity-100 hover:scale-102 bg-white/70 border-gray-300"
-                      }`}
+                      onClick={() => setIsFormOpen(false)}
+                      className="px-4 py-2 text-xs font-serif text-[#76685A] hover:text-[#700D20] underline underline-offset-4 cursor-pointer"
                     >
-                      <span
-                        className="w-3 h-3 rounded-full shadow-xs"
-                        style={{ backgroundColor: theme.dotColor }}
-                      />
-                      <span>{theme.name}</span>
+                      Cancel
                     </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Blessing Tag Selector */}
-            <div>
-              <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5">
-                Blessing Theme
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {BLESSING_TAGS.map((tag) => (
-                  <button
-                    type="button"
-                    key={tag}
-                    onClick={() => setBlessingTag(tag)}
-                    className={`px-3 py-1 rounded-full text-xs font-serif transition-all border ${
-                      blessingTag === tag
-                        ? "bg-[#123D25] text-[#E5C67C] border-[#C49A43] shadow-sm scale-102"
-                        : "bg-[#FFF9ED] text-[#76685A] border-[#C49A43]/30 hover:border-[#C49A43]"
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Message Body */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium">
-                  Your Sticky Note Message *
-                </label>
-                <span className="text-[11px] text-[#A49483]">
-                  {message.length}/500
-                </span>
-              </div>
-              <textarea
-                required
-                rows={3}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                maxLength={500}
-                placeholder="Write your prayers, blessings, or sweet memories for Vishnuraj &amp; Josly..."
-                className="w-full px-4 py-2.5 rounded-xl bg-[#FFFDF9] border border-[#C49A43]/50 focus:border-[#700D20] focus:ring-1 focus:ring-[#700D20] text-sm text-[#2F261F] placeholder-[#A49483] outline-none transition-all resize-none leading-relaxed"
-              />
-            </div>
-
-            {/* Submit Button & Confirmation */}
-            <div className="flex items-center justify-between pt-2">
-              <AnimatePresence>
-                {submitted && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="flex items-center gap-1.5 text-xs font-serif text-[#123D25] font-medium"
-                  >
-                    <CheckCircle2 className="w-4 h-4 text-[#123D25]" />
-                    <span>Your note has been pinned to the board!</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <button
-                type="submit"
-                disabled={isSubmitting || !name.trim() || !message.trim()}
-                className="ml-auto inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#700D20] to-[#500A17] text-[#FFF9ED] border border-[#C49A43]/60 text-xs sm:text-sm font-serif tracking-wider shadow-md hover:shadow-lg transition-all duration-300 hover:scale-102 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              >
-                {isSubmitting ? (
-                  <span>Pinning Note...</span>
-                ) : (
-                  <>
-                    <span>Pin Note to Board</span>
-                    <Send className="w-3.5 h-3.5" />
-                  </>
-                )}
-              </button>
-            </div>
-          </form>
-        </motion.div>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting || !name.trim() || !message.trim()}
+                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#700D20] to-[#500A17] text-[#FFF9ED] border border-[#C49A43]/60 text-xs sm:text-sm font-serif tracking-wider shadow-md hover:shadow-lg transition-all duration-300 hover:scale-102 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      {isSubmitting ? (
+                        <span>Pinning Note...</span>
+                      ) : (
+                        <>
+                          <span>Pin Note to Board</span>
+                          <Send className="w-3.5 h-3.5" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Stream Hint */}
         <div className="flex items-center justify-center gap-2 mb-6 text-xs font-serif text-[#76685A] italic text-center px-4">
