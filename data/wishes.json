@@ -1,5 +1,15 @@
 [
   {
+    "id": "wish-1793816916067-mdw7",
+    "name": "akshith",
+    "relationship": "Friend of Groom",
+    "message": "wish youn a happy married life",
+    "blessingTag": "✨ Eternal Love",
+    "color": "yellow",
+    "createdAt": "2026-11-04T18:28:36.067Z",
+    "likes": 1
+  },
+  {
     "id": "wish-1",
     "name": "Anoop & Meera",
     "relationship": "Family Friend",
@@ -7,7 +17,7 @@
     "blessingTag": "Eternal Love",
     "color": "yellow",
     "createdAt": "2026-11-01T10:30:00.000Z",
-    "likes": 12
+    "likes": 13
   },
   {
     "id": "wish-2",

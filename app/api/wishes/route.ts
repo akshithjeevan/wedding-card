@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import { initialWishes, Wish } from "@/data/initialWishes";
+import { getMongoClient } from "@/lib/mongodb";
 
 const dataFilePath = path.join(process.cwd(), "data", "wishes.json");
 
-function getWishes(): Wish[] {
+function getLocalWishes(): Wish[] {
   try {
     if (fs.existsSync(dataFilePath)) {
       const fileData = fs.readFileSync(dataFilePath, "utf-8");
@@ -15,12 +16,12 @@ function getWishes(): Wish[] {
       }
     }
   } catch (err) {
-    console.error("Error reading wishes file:", err);
+    console.error("Error reading local wishes file:", err);
   }
   return initialWishes;
 }
 
-function saveWishes(wishes: Wish[]): void {
+function saveLocalWishes(wishes: Wish[]): void {
   try {
     const dir = path.dirname(dataFilePath);
     if (!fs.existsSync(dir)) {
@@ -28,12 +29,39 @@ function saveWishes(wishes: Wish[]): void {
     }
     fs.writeFileSync(dataFilePath, JSON.stringify(wishes, null, 2), "utf-8");
   } catch (err) {
-    console.error("Error saving wishes file:", err);
+    console.error("Error saving local wishes file:", err);
   }
 }
 
 export async function GET() {
-  const wishes = getWishes();
+  const clientPromise = getMongoClient();
+
+  if (clientPromise) {
+    try {
+      const client = await clientPromise;
+      const db = client.db("wedding");
+      const collection = db.collection<Wish>("wishes");
+
+      const count = await collection.countDocuments();
+      if (count === 0) {
+        // Seed MongoDB Atlas with initial wishes
+        await collection.insertMany(initialWishes as Wish[]);
+        return NextResponse.json({ wishes: initialWishes });
+      }
+
+      const wishes = await collection
+        .find({}, { projection: { _id: 0 } })
+        .sort({ createdAt: -1 })
+        .toArray();
+
+      return NextResponse.json({ wishes });
+    } catch (err) {
+      console.warn("MongoDB Atlas fetch failed, using local fallback:", err);
+    }
+  }
+
+  // Local fallback
+  const wishes = getLocalWishes();
   return NextResponse.json({ wishes });
 }
 
@@ -61,29 +89,19 @@ export async function POST(req: NextRequest) {
       likes: 1,
     };
 
-    const currentWishes = getWishes();
-    const updated = [newWish, ...currentWishes];
-    saveWishes(updated);
+    // Always update local backup
+    const localWishes = getLocalWishes();
+    saveLocalWishes([newWish, ...localWishes]);
 
-    // Optional Google Sheet webhook integration if user configures GOOGLE_SHEET_WEBHOOK_URL
-    const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
-    if (webhookUrl) {
+    // Save to MongoDB Atlas if available
+    const clientPromise = getMongoClient();
+    if (clientPromise) {
       try {
-        fetch(webhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            timestamp: newWish.createdAt,
-            name: newWish.name,
-            relationship: newWish.relationship,
-            message: newWish.message,
-            blessingTag: newWish.blessingTag,
-          }),
-        }).catch((webhookErr) => {
-          console.warn("Google Sheet webhook delivery failed:", webhookErr);
-        });
-      } catch {
-        // Non-blocking
+        const client = await clientPromise;
+        const db = client.db("wedding");
+        await db.collection("wishes").insertOne({ ...newWish });
+      } catch (mongoErr) {
+        console.warn("MongoDB Atlas insert failed, saved to local fallback:", mongoErr);
       }
     }
 
@@ -103,7 +121,30 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
-    const currentWishes = getWishes();
+    // Try MongoDB Atlas update first
+    const clientPromise = getMongoClient();
+    if (clientPromise) {
+      try {
+        const client = await clientPromise;
+        const db = client.db("wedding");
+        const collection = db.collection<Wish>("wishes");
+
+        const updated = await collection.findOneAndUpdate(
+          { id },
+          { $inc: { likes: 1 } },
+          { returnDocument: "after", projection: { _id: 0 } }
+        );
+
+        if (updated) {
+          return NextResponse.json({ wish: updated, success: true });
+        }
+      } catch (mongoErr) {
+        console.warn("MongoDB Atlas update failed, using local fallback:", mongoErr);
+      }
+    }
+
+    // Local fallback update
+    const currentWishes = getLocalWishes();
     let updatedWish: Wish | null = null;
 
     const updated = currentWishes.map((w) => {
@@ -118,11 +159,10 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Wish not found" }, { status: 404 });
     }
 
-    saveWishes(updated);
+    saveLocalWishes(updated);
     return NextResponse.json({ wish: updatedWish, success: true });
   } catch (err) {
     console.error("Error updating wish:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
