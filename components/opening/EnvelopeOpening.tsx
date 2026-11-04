@@ -28,10 +28,6 @@ export const EnvelopeOpening: React.FC<EnvelopeOpeningProps> = ({
     // Prime / start audio on user gesture so browser unlocks it
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("wedding-play-music"));
-      const win = window as unknown as { __playWeddingMusic?: () => void };
-      if (typeof win.__playWeddingMusic === "function") {
-        win.__playWeddingMusic();
-      }
     }
 
     setTimeout(() => {
@@ -49,27 +45,14 @@ export const EnvelopeOpening: React.FC<EnvelopeOpeningProps> = ({
 
     setTimeout(() => {
       setIsDismissed(true);
-      // Ensure music is playing at full volume when the main invitation page appears
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("wedding-play-music"));
-        const win = window as unknown as { __playWeddingMusic?: () => void };
-        if (typeof win.__playWeddingMusic === "function") {
-          win.__playWeddingMusic();
-        }
-      }
       if (onOpenComplete) onOpenComplete();
     }, 2800);
   };
 
   const handleSkip = () => {
     setIsDismissed(true);
-    // Ensure music is playing when the main invitation page appears
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("wedding-play-music"));
-      const win = window as unknown as { __playWeddingMusic?: () => void };
-      if (typeof win.__playWeddingMusic === "function") {
-        win.__playWeddingMusic();
-      }
     }
     if (onOpenComplete) onOpenComplete();
   };

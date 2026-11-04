@@ -47,56 +47,80 @@ export const MusicPlayer: React.FC = () => {
     audioRef.current = audio;
 
     const startAudio = async () => {
+      const audio = audioRef.current;
+      if (!audio || isPlayingRef.current) return;
+
       setHasInteracted(true);
       try {
         audio.volume = 0.65;
-        await audio.play();
-        setIsPlaying(true);
-        isPlayingRef.current = true;
-      } catch (err) {
-        console.warn("Primary audio play failed, trying fallback:", err);
-        try {
-          audio.src = "/audio/bg-music.mp3";
-          audio.volume = 0.65;
-          audio.load();
-          await audio.play();
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
           setIsPlaying(true);
           isPlayingRef.current = true;
-        } catch (fallbackErr) {
-          console.error("Audio playback blocked or failed:", fallbackErr);
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === "NotAllowedError") {
+          // Expected browser policy: autoplay without gesture is blocked until user interacts
+          setIsPlaying(false);
+          isPlayingRef.current = false;
+          return;
+        }
+
+        // Try static fallback if API streaming failed
+        try {
+          if (!audio.src.includes("/audio/bg-music.mp3")) {
+            audio.src = "/audio/bg-music.mp3";
+            audio.volume = 0.65;
+            audio.load();
+            const fallbackPromise = audio.play();
+            if (fallbackPromise !== undefined) {
+              await fallbackPromise;
+              setIsPlaying(true);
+              isPlayingRef.current = true;
+            }
+          }
+        } catch {
+          setIsPlaying(false);
+          isPlayingRef.current = false;
         }
       }
     };
 
     const handleRemotePlay = () => {
-      startAudio();
+      if (!isPlayingRef.current) {
+        startAudio();
+      }
     };
 
     window.addEventListener("wedding-play-music", handleRemotePlay);
-    (window as unknown as { __playWeddingMusic?: () => void }).__playWeddingMusic = () => startAudio();
+    (window as unknown as { __playWeddingMusic?: () => void }).__playWeddingMusic = () => {
+      if (!isPlayingRef.current) {
+        startAudio();
+      }
+    };
 
-    // Attempt direct autoplay on mount if allowed
-    audio.play().then(() => {
-      setIsPlaying(true);
-      isPlayingRef.current = true;
-    }).catch(() => {
-      // Autoplay blocked until interaction; wait for gesture
-    });
+    // If the browser already has user activation, attempt playback
+    if (typeof navigator !== "undefined" && (navigator as { userActivation?: { hasBeenActive?: boolean } }).userActivation?.hasBeenActive) {
+      startAudio();
+    }
 
-    // If user is already on this page or interacts with it, start playback immediately
+    // Unlock and start audio on the very first user interaction anywhere on the page
     const handlePageInteraction = () => {
-      if (!audioRef.current || isPlayingRef.current) return;
+      if (isPlayingRef.current) return;
       startAudio();
     };
-    window.addEventListener("click", handlePageInteraction, { once: true });
-    window.addEventListener("scroll", handlePageInteraction, { once: true });
-    window.addEventListener("touchstart", handlePageInteraction, { once: true });
+    window.addEventListener("pointerdown", handlePageInteraction, { once: true, passive: true });
+    window.addEventListener("click", handlePageInteraction, { once: true, passive: true });
+    window.addEventListener("touchstart", handlePageInteraction, { once: true, passive: true });
+    window.addEventListener("keydown", handlePageInteraction, { once: true, passive: true });
 
     return () => {
       window.removeEventListener("wedding-play-music", handleRemotePlay);
+      window.removeEventListener("pointerdown", handlePageInteraction);
       window.removeEventListener("click", handlePageInteraction);
-      window.removeEventListener("scroll", handlePageInteraction);
       window.removeEventListener("touchstart", handlePageInteraction);
+      window.removeEventListener("keydown", handlePageInteraction);
       delete (window as unknown as { __playWeddingMusic?: () => void }).__playWeddingMusic;
       audio.removeEventListener("play", handlePlay);
       audio.removeEventListener("pause", handlePause);
@@ -118,15 +142,17 @@ export const MusicPlayer: React.FC = () => {
       try {
         await audio.play();
         setIsPlaying(true);
-      } catch (err) {
-        console.warn("Primary audio play failed, trying fallback:", err);
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === "NotAllowedError") {
+          setIsPlaying(false);
+          return;
+        }
         try {
           audio.src = "/audio/bg-music.mp3";
           audio.load();
           await audio.play();
           setIsPlaying(true);
-        } catch (fallbackErr) {
-          console.error("Audio playback completely blocked or failed:", fallbackErr);
+        } catch {
           setIsPlaying(false);
         }
       }
