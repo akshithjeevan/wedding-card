@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@source "../components";
+@source "../app";
+@source "../data";
+
+@theme {
+  --color-ivory-primary: #FFF9ED;
+  --color-ivory-secondary: #F5EBD8;
+  --color-ivory-card: #FDF6E8;
+  --color-forest-green: #123D25;
+  --color-deep-green: #0C321B;
+  --color-dark-green: #082012;
+  --color-gold-champagne: #C49A43;
+  --color-gold-light: #E5C67C;
+  --color-gold-dark: #9E7A2F;
+  --color-burgundy: #700D20;
+  --color-burgundy-dark: #520917;
+  --color-text-primary: #2F261F;
+  --color-text-secondary: #76685A;
+
+  --font-script: "Great Vibes", cursive, serif;
+  --font-cormorant: "Cormorant Garamond", Georgia, serif;
+  --font-playfair: "Playfair Display", Georgia, serif;
+  --font-serif: "Lora", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --background: #FFF9ED;
+  --foreground: #2F261F;
+  --font-script: 'Great Vibes', cursive, serif;
+  --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-lora: 'Lora', Georgia, serif;
+  --font-inter: 'Inter', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FFF9ED;
+  color: #2F261F;
+  font-family: var(--font-lora), 'Lora', Georgia, serif;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Subtle luxury grain texture */
+.paper-texture {
+  background-color: #FFF9ED;
+  background-image: 
+    radial-gradient(rgba(196, 154, 67, 0.04) 1px, transparent 0),
+    radial-gradient(rgba(112, 13, 32, 0.02) 1px, transparent 0);
+  background-size: 24px 24px, 32px 32px;
+  background-position: 0 0, 12px 12px;
+}
+
+/* Gold foil sheen effect */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #E5C67C 0%, #C49A43 50%, #9E7A2F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-shadow {
+  box-shadow: 0 8px 30px rgba(196, 154, 67, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.gold-shadow-lg {
+  box-shadow: 0 16px 40px rgba(196, 154, 67, 0.18), 0 4px 12px rgba(12, 50, 27, 0.06);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F5EBD8;
+}
+::-webkit-scrollbar-thumb {
+  background: #C49A43;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9E7A2F;
+}
