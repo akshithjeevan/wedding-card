@@ -523,108 +523,147 @@ export const WishesSection: React.FC = () => {
           </form>
         </motion.div>
 
-        {/* Live Colorful Sticky Notes Wall */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4 pb-8">
-          <AnimatePresence>
-            {wishes.map((item, idx) => {
-              const theme = getTheme(item.color, idx);
-              const rotation = ROTATIONS[idx % ROTATIONS.length];
+        {/* Stream Hint */}
+        <div className="flex items-center justify-center gap-2 mb-6 text-xs font-serif text-[#76685A] italic text-center px-4">
+          <span className="w-8 h-px bg-[#C49A43]/40 hidden sm:inline-block" />
+          <span>🌊 Flowing river of blessings • Hover any note to pause &amp; read</span>
+          <span className="w-8 h-px bg-[#C49A43]/40 hidden sm:inline-block" />
+        </div>
 
-              return (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  style={{
-                    rotate: `${rotation}deg`,
-                  }}
-                  whileHover={{
-                    scale: 1.04,
-                    rotate: 0,
-                    y: -8,
-                    zIndex: 35,
-                    transition: { duration: 0.25, ease: "easeOut" },
-                  }}
-                  transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className={`relative p-6 pt-7 rounded-2xl bg-gradient-to-br ${theme.bgGradient} ${theme.border} border shadow-[0_12px_28px_rgba(0,0,0,0.08),0_4px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.16)] select-none group`}
-                >
-                  {/* Realistic Metallic Gold / Gem Pushpin at Top Center */}
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none drop-shadow-md">
-                    <div
-                      className={`w-5 h-5 rounded-full bg-gradient-to-br ${theme.pinHead} shadow-[0_2px_4px_rgba(0,0,0,0.3)] border border-white/60 relative flex items-center justify-center`}
+        {/* Live Colorful Sticky Notes Flowing Like Water Left to Right */}
+        <div
+          className="relative w-full overflow-hidden py-6"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+          }}
+        >
+          {(() => {
+            const loopMultiplier = Math.max(3, Math.ceil(10 / Math.max(1, wishes.length)));
+            const singleSet = Array.from({ length: loopMultiplier }, () => wishes).flat();
+            const displayList = [...singleSet, ...singleSet];
+
+            return (
+              <div className="water-flow-track gap-8 items-center py-6">
+                {displayList.map((item, idx) => {
+                  const theme = getTheme(item.color, idx);
+                  const rotation = ROTATIONS[idx % ROTATIONS.length];
+
+                  return (
+                    <motion.div
+                      key={`${item.id}-${idx}`}
+                      style={{
+                        rotate: `${rotation}deg`,
+                      }}
+                      animate={{
+                        y: [0, -8, 2, -6, 0],
+                        rotate: [
+                          rotation,
+                          rotation + 0.8,
+                          rotation - 0.6,
+                          rotation + 0.5,
+                          rotation,
+                        ],
+                      }}
+                      transition={{
+                        duration: 4.8 + (idx % 4) * 0.4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: (idx % 6) * 0.4,
+                      }}
+                      whileHover={{
+                        scale: 1.05,
+                        rotate: 0,
+                        y: -12,
+                        zIndex: 40,
+                        transition: { duration: 0.25, ease: "easeOut" },
+                      }}
+                      className={`w-[290px] sm:w-[320px] shrink-0 relative p-6 pt-7 rounded-2xl bg-gradient-to-br ${theme.bgGradient} ${theme.border} border shadow-[0_12px_28px_rgba(0,0,0,0.08),0_4px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between transition-shadow duration-300 hover:shadow-[0_20px_45px_rgba(0,0,0,0.18)] select-none group cursor-pointer`}
                     >
-                      {/* Pushpin Specular Reflection Dot */}
-                      <div className="w-1.5 h-1.5 rounded-full bg-white/90 blur-[0.2px] -mt-1 -ml-1" />
-                    </div>
-                    {/* Pushpin Shadow */}
-                    <div className="w-1.5 h-1.5 bg-black/30 -mt-0.5 rounded-full blur-[0.5px]" />
-                  </div>
+                      {/* Realistic Metallic Gold Pushpin at Top Center */}
+                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none drop-shadow-md">
+                        <div
+                          className={`w-5 h-5 rounded-full bg-gradient-to-br ${theme.pinHead} shadow-[0_2px_4px_rgba(0,0,0,0.3)] border border-white/60 relative flex items-center justify-center`}
+                        >
+                          {/* Pushpin Specular Reflection Dot */}
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/90 blur-[0.2px] -mt-1 -ml-1" />
+                        </div>
+                        {/* Pushpin Shadow */}
+                        <div className="w-1.5 h-1.5 bg-black/30 -mt-0.5 rounded-full blur-[0.5px]" />
+                      </div>
 
-                  {/* Faint Subtle Tape Strip at Top (Vintage Stationery Feel) */}
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-3 bg-white/35 backdrop-blur-[1px] border-x border-b border-white/40 rounded-b-sm pointer-events-none" />
+                      {/* Faint Subtle Tape Strip at Top (Vintage Stationery Feel) */}
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-3 bg-white/35 backdrop-blur-[1px] border-x border-b border-white/40 rounded-b-sm pointer-events-none" />
 
-                  {/* Note Content */}
-                  <div>
-                    {/* Header: Blessing Tag & Formatted Date */}
-                    <div className="flex items-center justify-between mb-3 relative z-10">
-                      <span
-                        className={`text-[11px] font-serif px-2.5 py-0.5 rounded-full border font-medium ${theme.tagClass}`}
-                      >
-                        {item.blessingTag || "✨ Blessing"}
-                      </span>
-                      <span className={`text-[11px] font-serif ${theme.metaColor} opacity-80`}>
-                        {formatDate(item.createdAt)}
-                      </span>
-                    </div>
+                      {/* Note Content */}
+                      <div>
+                        {/* Header: Blessing Tag & Formatted Date */}
+                        <div className="flex items-center justify-between mb-3 relative z-10">
+                          <span
+                            className={`text-[11px] font-serif px-2.5 py-0.5 rounded-full border font-medium ${theme.tagClass}`}
+                          >
+                            {item.blessingTag || "✨ Blessing"}
+                          </span>
+                          <span className={`text-[11px] font-serif ${theme.metaColor} opacity-80`}>
+                            {formatDate(item.createdAt)}
+                          </span>
+                        </div>
 
-                    {/* Handwritten Style Blessing Message */}
-                    <p
-                      className={`text-sm sm:text-[15px] font-serif italic ${theme.textColor} leading-relaxed relative z-10 mb-5 drop-shadow-[0_1px_0_rgba(255,255,255,0.4)]`}
-                    >
-                      &ldquo;{item.message}&rdquo;
-                    </p>
-                  </div>
+                        {/* Handwritten Style Blessing Message */}
+                        <p
+                          className={`text-sm sm:text-[15px] font-serif italic ${theme.textColor} leading-relaxed relative z-10 mb-5 drop-shadow-[0_1px_0_rgba(255,255,255,0.4)]`}
+                        >
+                          &ldquo;{item.message}&rdquo;
+                        </p>
+                      </div>
 
-                  {/* Footer: Guest Name & Interactive Heart Reaction */}
-                  <div className="pt-3 border-t border-black/10 flex items-center justify-between relative z-10">
-                    <div>
-                      <h4
-                        className={`text-sm font-playfair font-bold ${theme.authorColor} tracking-wide`}
-                      >
-                        {item.name}
-                      </h4>
-                      <p className={`text-[11px] font-serif ${theme.metaColor}`}>
-                        {item.relationship}
-                      </p>
-                    </div>
+                      {/* Footer: Guest Name & Interactive Heart Reaction */}
+                      <div className="pt-3 border-t border-black/10 flex items-center justify-between relative z-10">
+                        <div>
+                          <h4
+                            className={`text-sm font-playfair font-bold ${theme.authorColor} tracking-wide`}
+                          >
+                            {item.name}
+                          </h4>
+                          <p className={`text-[11px] font-serif ${theme.metaColor}`}>
+                            {item.relationship}
+                          </p>
+                        </div>
 
-                    <button
-                      type="button"
-                      onClick={() => handleLike(item.id)}
-                      aria-label={`Like wish from ${item.name}`}
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all shadow-xs ${
-                        likedWishIds[item.id]
-                          ? `${theme.heartActiveBg} scale-105 shadow-sm`
-                          : `bg-white/80 ${theme.heartHover} border`
-                      }`}
-                    >
-                      <Heart
-                        className={`w-3.5 h-3.5 ${
-                          likedWishIds[item.id] ? "fill-current" : ""
-                        }`}
-                      />
-                      <span className="font-sans font-semibold text-[11px]">
-                        {item.likes || 1}
-                      </span>
-                    </button>
-                  </div>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleLike(item.id);
+                          }}
+                          aria-label={`Like wish from ${item.name}`}
+                          className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all shadow-xs ${
+                            likedWishIds[item.id]
+                              ? `${theme.heartActiveBg} scale-105 shadow-sm`
+                              : `bg-white/80 ${theme.heartHover} border`
+                          }`}
+                        >
+                          <Heart
+                            className={`w-3.5 h-3.5 ${
+                              likedWishIds[item.id] ? "fill-current" : ""
+                            }`}
+                          />
+                          <span className="font-sans font-semibold text-[11px]">
+                            {item.likes || 1}
+                          </span>
+                        </button>
+                      </div>
 
-                  {/* Soft Realistic Curled Bottom-Right Shadow Accent */}
-                  <div className="absolute bottom-0 right-0 w-8 h-8 rounded-br-2xl bg-gradient-to-tl from-black/5 to-transparent pointer-events-none" />
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+                      {/* Soft Realistic Curled Bottom-Right Shadow Accent */}
+                      <div className="absolute bottom-0 right-0 w-8 h-8 rounded-br-2xl bg-gradient-to-tl from-black/5 to-transparent pointer-events-none" />
+                    </motion.div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
       </div>
     </section>

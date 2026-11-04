@@ -88,3 +88,24 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #9E7A2F;
 }
+
+/* Flowing water river animation for sticky notes (Left to Right) */
+@keyframes waterFlowLeftToRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.water-flow-track {
+  display: flex;
+  width: max-content;
+  animation: waterFlowLeftToRight 55s linear infinite;
+  will-change: transform;
+}
+
+.water-flow-track:hover {
+  animation-play-state: paused;
+}
