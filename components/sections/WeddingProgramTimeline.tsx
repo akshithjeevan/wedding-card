@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Car, Clock, Sparkles, UtensilsCrossed, Camera, Heart } from "lucide-react";
+import { Car, Clock, Flower2, UtensilsCrossed, Camera, Heart } from "lucide-react";
 import { weddingData } from "@/data/wedding";
 
 export const WeddingProgramTimeline: React.FC = () => {
@@ -104,7 +104,7 @@ export const WeddingProgramTimeline: React.FC = () => {
           {/* Dress Code Callout Card at Bottom of Program */}
           <div className="mt-6 pt-4 border-t border-[#EFE6E0] flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-[#FAF4F0] text-[#704863] flex items-center justify-center shrink-0">
-              <Sparkles className="w-4 h-4 text-[#C49A43]" />
+              <Flower2 className="w-4 h-4 text-[#C49A43]" />
             </div>
             <div className="text-left">
               <span className="text-[10px] font-sans uppercase tracking-widest text-[#704863] font-semibold block">

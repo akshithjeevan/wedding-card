@@ -159,7 +159,7 @@ export const FloralCorner: React.FC<FloralCornerProps> = ({
           <circle cx="30" cy="30" r="5" fill="url(#flowerCenter)" />
         </g>
 
-        {/* Golden sparkles */}
+        {/* Decorative gold dots */}
         <circle cx="120" cy="45" r="1.5" fill="#C49A43" opacity="0.7" />
         <circle cx="48" cy="120" r="1.5" fill="#C49A43" opacity="0.7" />
         <circle cx="100" cy="95" r="1" fill="#E5C67C" opacity="0.8" />

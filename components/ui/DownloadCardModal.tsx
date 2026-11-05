@@ -9,7 +9,7 @@ import {
   Printer,
   Share2,
   FileText,
-  Sparkles,
+  Award,
   Check,
   Eye,
 } from "lucide-react";
@@ -162,7 +162,7 @@ export const DownloadCardModal: React.FC<DownloadCardModalProps> = ({
             <div className="p-5 sm:p-7 flex flex-col items-center text-center">
               {/* Badge */}
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#123D25]/10 border border-[#C49A43]/40 text-[#123D25] text-[11px] uppercase tracking-[0.2em] font-serif font-semibold mb-2">
-                <Sparkles className="w-3 h-3 text-[#C49A43]" />
+                <Award className="w-3 h-3 text-[#C49A43]" />
                 <span>Official Invitation Card</span>
               </div>
 

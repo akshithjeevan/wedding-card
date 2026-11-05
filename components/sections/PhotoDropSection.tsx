@@ -10,7 +10,6 @@ import {
   ExternalLink,
   Copy,
   Check,
-  Sparkles,
   Download,
   Smartphone,
   Heart,

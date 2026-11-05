@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FloralCorner } from "@/components/decorations/FloralCorner";
 import { GoldDivider } from "@/components/decorations/GoldDivider";
 import { Wish, initialWishes } from "@/data/initialWishes";
-import { Heart, Send, Sparkles, MessageSquareHeart, CheckCircle2, Palette, X } from "lucide-react";
+import { Heart, Send, Flower2, MessageSquareHeart, CheckCircle2, Palette, X } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export interface StickyColorTheme {
@@ -342,9 +342,9 @@ export const WishesSection: React.FC = () => {
           className="text-center mb-8"
         >
           <span className="text-xs uppercase tracking-[0.3em] text-[#704863] font-serif font-semibold flex items-center justify-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#C49A43]" />
+            <Heart className="w-3 h-3 text-[#C49A43] fill-[#C49A43]" />
             Wishes &amp; Blessings
-            <Sparkles className="w-3.5 h-3.5 text-[#C49A43]" />
+            <Heart className="w-3 h-3 text-[#C49A43] fill-[#C49A43]" />
           </span>
           <h2 className="text-2xl sm:text-3xl font-playfair font-bold text-[#3D182E] mt-1">
             Guest Book Sticky Wall
