@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Share2, Calendar, Link2, Phone, Check } from "lucide-react";
+import { Share2, Calendar, Link2, Phone, Check, Download, FileText, Sparkles } from "lucide-react";
 import { GoldDivider } from "@/components/decorations/GoldDivider";
 import { weddingData } from "@/data/wedding";
 
@@ -26,6 +26,12 @@ export const ShareSection: React.FC = () => {
   const handleCallFamily = () => {
     const primaryPhone = weddingData.family.phoneNumbers[0].raw;
     window.location.href = `tel:${primaryPhone}`;
+  };
+
+  const handleOpenCardModal = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("wedding-open-card-modal"));
+    }
   };
 
   const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
@@ -134,6 +140,42 @@ export const ShareSection: React.FC = () => {
             );
           })}
         </div>
+
+        {/* 1-Click Printable / PDF Invitation Download Action */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mt-10 w-full max-w-md"
+        >
+          <button
+            onClick={handleOpenCardModal}
+            className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#123D25] via-[#1a4e32] to-[#123D25] text-[#FFF9ED] font-serif border-2 border-[#C49A43] shadow-[0_10px_25px_rgba(18,61,37,0.25)] hover:scale-[1.02] hover:shadow-[0_12px_30px_rgba(18,61,37,0.35)] transition-all flex items-center justify-between group cursor-pointer"
+          >
+            <div className="flex items-center gap-3 text-left">
+              <div className="w-11 h-11 rounded-xl bg-[#FFFDF8] text-[#700D20] border border-[#C49A43] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-sm">
+                <Download className="w-5 h-5 text-[#700D20]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-sm sm:text-base text-[#FFF9ED]">
+                    Download Invitation Card
+                  </span>
+                  <Sparkles className="w-3.5 h-3.5 text-[#E5C67C]" />
+                </div>
+                <span className="text-xs text-[#E5C67C]/90 font-serif">
+                  WhatsApp Status Image or Printable PDF
+                </span>
+              </div>
+            </div>
+
+            <div className="hidden sm:flex items-center gap-1 text-xs font-semibold text-[#E5C67C] pl-2">
+              <span>Get Card</span>
+              <span>→</span>
+            </div>
+          </button>
+        </motion.div>
       </div>
     </section>
   );

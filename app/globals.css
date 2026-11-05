@@ -184,3 +184,45 @@ body {
     background: radial-gradient(circle at 50% 28%, #226B41 0%, #123D25 65%, #092415 100%) !important;
   }
 }
+
+/* ==========================================================================
+   1-Click Printable / PDF Invitation Card Styles
+   ========================================================================== */
+@media print {
+  @page {
+    size: A5 portrait;
+    margin: 8mm;
+  }
+
+  html, body {
+    background: #FFF9ED !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide regular web elements on print */
+  body > * {
+    display: none !important;
+  }
+
+  /* Show only the printable invitation container */
+  #printable-invitation-card-portal,
+  #printable-invitation-card-portal * {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  #printable-invitation-card-portal {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    background: #FFF9ED !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 999999 !important;
+  }
+}

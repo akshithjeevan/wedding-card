@@ -7,7 +7,7 @@ import { Nilavilakku } from "@/components/decorations/Nilavilakku";
 import { FloralCorner } from "@/components/decorations/FloralCorner";
 import { GoldDivider } from "@/components/decorations/GoldDivider";
 import { weddingData } from "@/data/wedding";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Download } from "lucide-react";
 
 export const HeroSection: React.FC = () => {
   return (
@@ -93,6 +93,26 @@ export const HeroSection: React.FC = () => {
         >
           {weddingData.couple.subMessage}
         </motion.p>
+
+        {/* 1-Click Card Download Button in Hero */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="mt-6"
+        >
+          <button
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("wedding-open-card-modal"));
+              }
+            }}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FFFDF8]/90 text-[#123D25] border border-[#C49A43] shadow-[0_4px_14px_rgba(196,154,67,0.18)] hover:bg-[#F6ECE0] hover:scale-105 transition-all text-xs font-serif font-semibold tracking-wider cursor-pointer"
+          >
+            <Download className="w-3.5 h-3.5 text-[#700D20]" />
+            <span>Download Invitation Card</span>
+          </button>
+        </motion.div>
       </div>
 
       {/* Scroll to Discover Indicator */}

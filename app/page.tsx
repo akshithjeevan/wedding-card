@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { EnvelopeOpening } from "@/components/opening/EnvelopeOpening";
 import { FloatingPetals } from "@/components/decorations/FloatingPetals";
 import { Navbar } from "@/components/navigation/Navbar";
@@ -17,9 +17,17 @@ import { DepartureSection } from "@/components/sections/DepartureSection";
 import { ShareSection } from "@/components/sections/ShareSection";
 import { FooterSection } from "@/components/sections/FooterSection";
 import { MusicPlayer } from "@/components/ui/MusicPlayer";
+import { InvitationCardModal } from "@/components/ui/InvitationCardModal";
 
 export default function Home() {
   const [showEnvelope, setShowEnvelope] = useState(true);
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpenModal = () => setIsCardModalOpen(true);
+    window.addEventListener("wedding-open-card-modal", handleOpenModal);
+    return () => window.removeEventListener("wedding-open-card-modal", handleOpenModal);
+  }, []);
 
   const handleEnvelopeComplete = () => {
     setShowEnvelope(false);
@@ -64,6 +72,12 @@ export default function Home() {
         <ShareSection />
         <FooterSection />
       </div>
+
+      {/* 1-Click Printable / PDF & WhatsApp Status Invitation Modal */}
+      <InvitationCardModal
+        isOpen={isCardModalOpen}
+        onClose={() => setIsCardModalOpen(false)}
+      />
     </main>
   );
 }
