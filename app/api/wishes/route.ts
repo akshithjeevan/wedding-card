@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
       id: "wish-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
       name: name.trim().slice(0, 80),
       relationship: (relationship || "Well Wisher").trim().slice(0, 50),
-      message: message.trim().slice(0, 500),
+      message: message.trim().slice(0, 200),
       blessingTag: (blessingTag || "Blessings & Love").trim().slice(0, 30),
       color: typeof color === "string" ? color : "yellow",
       createdAt: new Date().toISOString(),
@@ -115,11 +115,13 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id } = body;
+    const { id, action } = body;
 
     if (!id || typeof id !== "string") {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
+
+    const delta = action === "unlike" ? -1 : 1;
 
     // Try MongoDB Atlas update first
     const clientPromise = getMongoClient();
@@ -131,7 +133,7 @@ export async function PATCH(req: NextRequest) {
 
         const updated = await collection.findOneAndUpdate(
           { id },
-          { $inc: { likes: 1 } },
+          { $inc: { likes: delta } },
           { returnDocument: "after", projection: { _id: 0 } }
         );
 
@@ -149,7 +151,7 @@ export async function PATCH(req: NextRequest) {
 
     const updated = currentWishes.map((w) => {
       if (w.id === id) {
-        updatedWish = { ...w, likes: (w.likes || 0) + 1 };
+        updatedWish = { ...w, likes: Math.max(0, (w.likes || 0) + delta) };
         return updatedWish;
       }
       return w;

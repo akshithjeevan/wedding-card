@@ -7,26 +7,28 @@ import { weddingData } from "@/data/wedding";
 
 export const MobileInvitationHero: React.FC = () => {
   return (
-    <section id="hero" className="relative w-full overflow-hidden text-center pt-0 pb-6 px-4">
+    <section id="hero" className="relative w-full overflow-hidden text-center pt-0 pb-6">
       {/* Top Watercolor Floral Garland matching the reference */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="w-full relative h-36 sm:h-44 -mx-4 overflow-hidden mb-2"
+        className="w-full relative h-36 sm:h-44 overflow-hidden mb-2"
       >
-        <Image
-          src="/images/mauve-floral-header.jpg"
-          alt="Lavender & Mauve Wedding Floral Header"
-          fill
-          priority
-          className="object-cover object-top"
-        />
+        <div className="relative w-full h-full translate-x-1 sm:translate-x-1.5 scale-[1.03]">
+          <Image
+            src="/images/mauve-floral-header.jpg"
+            alt="Lavender & Mauve Wedding Floral Header"
+            fill
+            priority
+            className="object-cover object-top"
+          />
+        </div>
         {/* Soft bottom fade to blend with pure white canvas */}
-        <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none" />
       </motion.div>
 
-      <div className="flex flex-col items-center max-w-sm mx-auto px-2 relative z-10">
+      <div className="flex flex-col items-center max-w-sm mx-auto px-4 relative z-10">
         {/* Traditional Sacred Invocation */}
         <motion.div
           initial={{ opacity: 0 }}

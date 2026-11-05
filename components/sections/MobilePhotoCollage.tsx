@@ -24,6 +24,11 @@ export const MobilePhotoCollage: React.FC = () => {
       caption: "Love, laughter & happily ever after",
       date: "Vishnuraj & Josly",
     },
+    {
+      src: "/images/couple-4.jpg",
+      caption: "A promise of a lifetime",
+      date: "With this ring, forever begins",
+    },
   ];
 
   useEffect(() => {

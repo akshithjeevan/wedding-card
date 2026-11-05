@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FloralCorner } from "@/components/decorations/FloralCorner";
 import { GoldDivider } from "@/components/decorations/GoldDivider";
 import { Wish, initialWishes } from "@/data/initialWishes";
-import { Heart, Send, Flower2, MessageSquareHeart, CheckCircle2, Palette, X } from "lucide-react";
+import { Heart, Send, MessageSquareHeart, CheckCircle2, X } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export interface StickyColorTheme {
@@ -127,10 +127,10 @@ export const STICKY_THEMES: Record<string, StickyColorTheme> = {
 const COLOR_KEYS = Object.keys(STICKY_THEMES);
 
 const BLESSING_TAGS = [
-  "✨ Eternal Love",
+  "💖 Eternal Love",
   "🕊️ Divine Grace",
   "🌸 Joy & Laughter",
-  "💫 Together Forever",
+  "💐 Together Forever",
   "🙏 Auspicious Blessings",
 ];
 
@@ -151,8 +151,7 @@ export const WishesSection: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [name, setName] = useState("");
   const [relationship, setRelationship] = useState("Friend of Groom");
-  const [blessingTag, setBlessingTag] = useState("✨ Eternal Love");
-  const [selectedColor, setSelectedColor] = useState("yellow");
+  const [blessingTag, setBlessingTag] = useState("💖 Eternal Love");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -198,11 +197,14 @@ export const WishesSection: React.FC = () => {
 
     setIsSubmitting(true);
 
+    // Automatically assign the next alternating sticky note color
+    const autoColor = COLOR_KEYS[wishes.length % COLOR_KEYS.length];
+
     const payload = {
       name: name.trim(),
       relationship,
       blessingTag,
-      color: selectedColor,
+      color: autoColor,
       message: message.trim(),
     };
 
@@ -257,10 +259,6 @@ export const WishesSection: React.FC = () => {
       setName("");
       setMessage("");
 
-      // Automatically advance to next sticky note color for fun
-      const currentIndex = COLOR_KEYS.indexOf(selectedColor);
-      setSelectedColor(COLOR_KEYS[(currentIndex + 1) % COLOR_KEYS.length]);
-
       try {
         confetti({
           particleCount: 50,
@@ -280,9 +278,15 @@ export const WishesSection: React.FC = () => {
   };
 
   const handleLike = async (id: string) => {
-    if (likedWishIds[id]) return;
+    const isCurrentlyLiked = !!likedWishIds[id];
+    const newLiked = { ...likedWishIds };
 
-    const newLiked = { ...likedWishIds, [id]: true };
+    if (isCurrentlyLiked) {
+      delete newLiked[id];
+    } else {
+      newLiked[id] = true;
+    }
+
     setLikedWishIds(newLiked);
     try {
       localStorage.setItem("wedding_liked_wishes", JSON.stringify(newLiked));
@@ -290,15 +294,16 @@ export const WishesSection: React.FC = () => {
       // Ignore
     }
 
+    const delta = isCurrentlyLiked ? -1 : 1;
     setWishes((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, likes: (w.likes || 0) + 1 } : w))
+      prev.map((w) => (w.id === id ? { ...w, likes: Math.max(0, (w.likes || 0) + delta) } : w))
     );
 
     try {
       await fetch("/api/wishes", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ id, action: isCurrentlyLiked ? "unlike" : "like" }),
       });
     } catch {
       // Ignore
@@ -318,13 +323,14 @@ export const WishesSection: React.FC = () => {
     }
   };
 
-  // Helper to pick theme safely
+  // Automatically pick alternating color theme based on position
   const getTheme = (colorKey?: string, index: number = 0): StickyColorTheme => {
+    // If the wish has a specific color, use it; otherwise alternate cleanly through COLOR_KEYS
     if (colorKey && STICKY_THEMES[colorKey]) {
       return STICKY_THEMES[colorKey];
     }
-    const fallbackKey = COLOR_KEYS[index % COLOR_KEYS.length];
-    return STICKY_THEMES[fallbackKey];
+    const altKey = COLOR_KEYS[index % COLOR_KEYS.length];
+    return STICKY_THEMES[altKey];
   };
 
   return (
@@ -361,7 +367,7 @@ export const WishesSection: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => setIsFormOpen((prev) => !prev)}
-            className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#123D25] via-[#1A4D30] to-[#123D25] text-[#FFF9ED] border-2 border-[#C49A43] shadow-[0_10px_30px_rgba(18,61,37,0.25)] hover:shadow-[0_15px_40px_rgba(196,154,67,0.35)] transition-all cursor-pointer"
+            className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#2A0E1F] via-[#3E162E] to-[#2A0E1F] text-[#FFF9ED] border-2 border-[#C49A43] shadow-[0_10px_30px_rgba(42,14,31,0.35)] hover:shadow-[0_15px_40px_rgba(196,154,67,0.35)] transition-all cursor-pointer"
           >
             <span className="p-1.5 rounded-full bg-[#C49A43]/20 text-[#E5C67C] group-hover:scale-110 transition-transform">
               <MessageSquareHeart className="w-4 h-4" />
@@ -390,7 +396,7 @@ export const WishesSection: React.FC = () => {
                 type="button"
                 onClick={() => setIsFormOpen(false)}
                 aria-label="Close sticky note form"
-                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#123D25]/10 hover:bg-[#700D20] text-[#700D20] hover:text-[#FFF9ED] border border-[#C49A43]/40 flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#2A0E1F]/10 hover:bg-[#2A0E1F] text-[#2A0E1F] hover:text-[#FFF9ED] border border-[#C49A43]/40 flex items-center justify-center transition-all cursor-pointer shadow-xs"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -402,10 +408,10 @@ export const WishesSection: React.FC = () => {
               <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#C49A43] rounded-br-sm pointer-events-none" />
 
               <div className="flex items-center gap-2 mb-5">
-                <span className="p-2 rounded-full bg-[#123D25] text-[#E5C67C] border border-[#C49A43]">
+                <span className="p-2 rounded-full bg-[#2A0E1F] text-[#E5C67C] border border-[#C49A43]">
                   <MessageSquareHeart className="w-4 h-4" />
                 </span>
-                <h3 className="font-playfair text-xl sm:text-2xl font-semibold text-[#123D25]">
+                <h3 className="font-playfair text-xl sm:text-2xl font-semibold text-[#2A0E1F]">
                   Leave a Sticky Note
                 </h3>
               </div>
@@ -446,38 +452,6 @@ export const WishesSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Note Color Palette Picker */}
-                <div>
-                  <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5 flex items-center gap-1.5">
-                    <Palette className="w-3.5 h-3.5 text-[#C49A43]" />
-                    Choose Note Color
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {COLOR_KEYS.map((key) => {
-                      const theme = STICKY_THEMES[key];
-                      const isSelected = selectedColor === key;
-                      return (
-                        <button
-                          type="button"
-                          key={key}
-                          onClick={() => setSelectedColor(key)}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-serif transition-all border ${
-                            isSelected
-                              ? "ring-2 ring-[#700D20] scale-105 shadow-md font-semibold bg-white border-[#700D20]"
-                              : "opacity-80 hover:opacity-100 hover:scale-102 bg-white/70 border-gray-300"
-                          }`}
-                        >
-                          <span
-                            className="w-3 h-3 rounded-full shadow-xs"
-                            style={{ backgroundColor: theme.dotColor }}
-                          />
-                          <span>{theme.name}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
                 {/* Blessing Tag Selector */}
                 <div>
                   <label className="block text-xs font-serif uppercase tracking-wider text-[#700D20] font-medium mb-1.5">
@@ -491,7 +465,7 @@ export const WishesSection: React.FC = () => {
                         onClick={() => setBlessingTag(tag)}
                         className={`px-3 py-1 rounded-full text-xs font-serif transition-all border ${
                           blessingTag === tag
-                            ? "bg-[#123D25] text-[#E5C67C] border-[#C49A43] shadow-sm scale-102"
+                            ? "bg-[#2A0E1F] text-[#E5C67C] border-[#C49A43] shadow-sm scale-102"
                             : "bg-[#FFF9ED] text-[#76685A] border-[#C49A43]/30 hover:border-[#C49A43]"
                         }`}
                       >
@@ -508,7 +482,7 @@ export const WishesSection: React.FC = () => {
                       Your Sticky Note Message *
                     </label>
                     <span className="text-[11px] text-[#A49483]">
-                      {message.length}/500
+                      {message.length}/200
                     </span>
                   </div>
                   <textarea
@@ -516,7 +490,7 @@ export const WishesSection: React.FC = () => {
                     rows={3}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    maxLength={500}
+                    maxLength={200}
                     placeholder="Write your prayers, blessings, or sweet memories for Vishnuraj &amp; Josly..."
                     className="w-full px-4 py-2.5 rounded-xl bg-[#FFFDF9] border border-[#C49A43]/50 focus:border-[#700D20] focus:ring-1 focus:ring-[#700D20] text-sm text-[#2F261F] placeholder-[#A49483] outline-none transition-all resize-none leading-relaxed"
                   />
@@ -530,9 +504,9 @@ export const WishesSection: React.FC = () => {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0 }}
-                        className="flex items-center gap-1.5 text-xs font-serif text-[#123D25] font-medium"
+                        className="flex items-center gap-1.5 text-xs font-serif text-[#2A0E1F] font-medium"
                       >
-                        <CheckCircle2 className="w-4 h-4 text-[#123D25]" />
+                        <CheckCircle2 className="w-4 h-4 text-[#2A0E1F]" />
                         <span>Your note has been pinned to the board!</span>
                       </motion.div>
                     )}
@@ -648,7 +622,7 @@ export const WishesSection: React.FC = () => {
                           <span
                             className={`text-[11px] font-serif px-2.5 py-0.5 rounded-full border font-medium ${theme.tagClass}`}
                           >
-                            {item.blessingTag || "✨ Blessing"}
+                            {item.blessingTag || "💖 Blessing"}
                           </span>
                           <span className={`text-[11px] font-serif ${theme.metaColor} opacity-80`}>
                             {formatDate(item.createdAt)}

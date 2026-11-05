@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Car, Clock, Flower2, UtensilsCrossed, Camera, Heart } from "lucide-react";
+import { Car, Crown, UtensilsCrossed, Heart, Camera } from "lucide-react";
 import { weddingData } from "@/data/wedding";
 
 export const WeddingProgramTimeline: React.FC = () => {
@@ -35,9 +35,9 @@ export const WeddingProgramTimeline: React.FC = () => {
     {
       time: "01:00 PM",
       period: "ONWARDS",
-      title: "Reception & Family Photos",
+      title: "Family & Guest Photos",
       location: "Main Stage",
-      description: "Bless the newly married couple & capture joyful memories.",
+      description: "Stage portraits, cherished group memories & photo sessions with Vishnuraj and Josly.",
       icon: Camera,
     },
   ];
@@ -60,23 +60,23 @@ export const WeddingProgramTimeline: React.FC = () => {
 
         {/* Vertical Timeline Card */}
         <div className="w-full bg-[#FFFFFF] rounded-2xl p-6 border border-[#E8DFD8] shadow-[0_4px_20px_rgba(61,24,46,0.06)] relative text-left">
-          {/* Vertical Guide Line */}
-          <div className="absolute left-[38px] top-8 bottom-8 w-0.5 bg-gradient-to-b from-[#C49A43] via-[#704863]/40 to-[#C49A43]" />
+          {/* Continuous Vertical Guide Line behind all node icons */}
+          <div className="absolute left-[41px] top-10 bottom-10 w-0.5 bg-gradient-to-b from-[#C49A43] via-[#704863]/40 to-[#C49A43] z-0 pointer-events-none" />
 
-          <div className="space-y-6 relative">
+          <div className="space-y-6 relative z-10">
             {events.map((evt, idx) => {
               const Icon = evt.icon;
               return (
                 <div key={idx} className="flex items-start gap-4 relative group">
-                  {/* Timeline Node Icon */}
+                  {/* Timeline Node Icon (solid background & z-10 keeps line strictly behind) */}
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 border z-10 transition-transform group-hover:scale-110 ${
+                    className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 border relative z-10 transition-transform group-hover:scale-110 ${
                       evt.highlight
                         ? "bg-[#3D182E] text-[#FFF7EE] border-[#C49A43] shadow-[0_0_12px_rgba(196,154,67,0.4)]"
-                        : "bg-[#FFFDF9] text-[#704863] border-[#D9C9C0]"
+                        : "bg-[#FFFFFF] text-[#704863] border-[#D9C9C0]"
                     }`}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-4 h-4 relative z-10" />
                   </div>
 
                   {/* Event Details */}
@@ -102,9 +102,10 @@ export const WeddingProgramTimeline: React.FC = () => {
           </div>
 
           {/* Dress Code Callout Card at Bottom of Program */}
-          <div className="mt-6 pt-4 border-t border-[#EFE6E0] flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#FAF4F0] text-[#704863] flex items-center justify-center shrink-0">
-              <Flower2 className="w-4 h-4 text-[#C49A43]" />
+          <div className="mt-6 pt-4 border-t border-[#EFE6E0] flex items-center gap-4 relative z-10">
+            {/* Opaque solid badge with z-20: line connects behind the circle, never over the crown icon */}
+            <div className="w-9 h-9 rounded-full bg-[#FAF4F0] text-[#704863] border border-[#D9C9C0] flex items-center justify-center shrink-0 relative z-20 shadow-xs">
+              <Crown className="w-4 h-4 text-[#C49A43] relative z-20" />
             </div>
             <div className="text-left">
               <span className="text-[10px] font-sans uppercase tracking-widest text-[#704863] font-semibold block">

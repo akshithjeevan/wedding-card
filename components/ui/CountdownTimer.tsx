@@ -105,7 +105,7 @@ export const CountdownTimer: React.FC = () => {
           onClick={triggerGoldConfetti}
           className="px-6 py-2.5 rounded-full bg-[#123D25] text-[#E5C67C] font-serif border border-[#C49A43] hover:scale-105 transition-transform"
         >
-          Celebrate with Gold Dust ✨
+          Celebrate with Gold Dust 🎉
         </button>
       </div>
     );

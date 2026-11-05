@@ -17,7 +17,7 @@
     "blessingTag": "Eternal Love",
     "color": "yellow",
     "createdAt": "2026-11-01T10:30:00.000Z",
-    "likes": 13
+    "likes": 12
   },
   {
     "id": "wish-2",
@@ -37,6 +37,6 @@
     "blessingTag": "Divine Blessings",
     "color": "sage",
     "createdAt": "2026-11-03T09:40:00.000Z",
-    "likes": 16
+    "likes": 15
   }
 ]

@@ -15,6 +15,7 @@ import { MobileThankYouSection } from "@/components/sections/MobileThankYouSecti
 import { MobileStickyBar } from "@/components/navigation/MobileStickyBar";
 import { MusicPlayer } from "@/components/ui/MusicPlayer";
 import { DownloadCardModal } from "@/components/ui/DownloadCardModal";
+import { FloatingPetals } from "@/components/decorations/FloatingPetals";
 
 export default function Home() {
   const [showEnvelope, setShowEnvelope] = useState(true);
@@ -53,15 +54,18 @@ export default function Home() {
         onClose={() => setShowDownloadModal(false)}
       />
 
+      {/* Romantic Falling Flower Petals Animation */}
+      <FloatingPetals />
+
       {/* Mobile-First Centered Card Frame */}
       {/* On Mobile (95% of users): 100% full width, edge-to-edge native card feel */}
       {/* On Desktop: Centered phone mockup frame matching the reference images */}
       <div className="w-full sm:max-w-[430px] md:max-w-[450px] min-h-screen bg-[#FFFFFF] sm:rounded-[36px] sm:shadow-[0_25px_70px_rgba(45,18,36,0.18)] sm:border-[6px] sm:border-[#3D182E]/10 overflow-hidden relative flex flex-col pb-16">
         <MobileInvitationHero />
+        <MobilePhotoCollage />
         <WeddingProgramTimeline />
         <SaveTheDateCalendar />
         <BigDayCountdown />
-        <MobilePhotoCollage />
         <MobileVenueSection />
         <MobileFamilySection />
         <WishesSection />
