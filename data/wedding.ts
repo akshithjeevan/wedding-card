@@ -129,7 +129,7 @@ export const weddingData: WeddingConfig = {
       "Be our honorary wedding photographer! Help Vishnuraj & Josly collect every candid smile, spontaneous laughter, and behind-the-scenes memory from their wedding day.",
     // Replace with your shared Google Drive folder link anytime:
     driveUrl:
-      "https://drive.google.com/drive/folders/1wzP8YhN_VishnurajJoslyWeddingDrive2026?usp=sharing",
+      "https://drive.google.com/drive/folders/1uaSsNV79DLSeQIlnwHGM80EzmOH0yS0i",
     hashtag: "#VishnuWedsJosly",
     folderName: "Vishnuraj & Josly Wedding Memories",
   },
