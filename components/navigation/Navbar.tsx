@@ -30,7 +30,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onReopenEnvelope }) => {
     { name: "Couple", href: "#couple" },
     { name: "Details", href: "#details" },
     { name: "Venue", href: "#venue" },
-    { name: "Sadhya", href: "#sadhya" },
     { name: "Family", href: "#family" },
     { name: "Wishes", href: "#wishes" },
     { name: "Photos", href: "#photos" },

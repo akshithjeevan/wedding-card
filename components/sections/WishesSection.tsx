@@ -330,11 +330,8 @@ export const WishesSection: React.FC = () => {
   return (
     <section
       id="wishes"
-      className="relative py-20 px-4 bg-gradient-to-b from-[#FFF9ED] via-[#F8EFE0] to-[#FFF9ED] overflow-hidden"
+      className="relative py-12 px-4 bg-[#FFFFFF] overflow-hidden"
     >
-      <FloralCorner position="top-left" size={170} />
-      <FloralCorner position="bottom-right" size={170} />
-
       <div className="max-w-5xl mx-auto relative z-20">
         {/* Section Heading */}
         <motion.div
@@ -342,18 +339,18 @@ export const WishesSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C49A43] font-serif font-medium flex items-center justify-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
+          <span className="text-xs uppercase tracking-[0.3em] text-[#704863] font-serif font-semibold flex items-center justify-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-[#C49A43]" />
             Wishes &amp; Blessings
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 text-[#C49A43]" />
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-playfair font-semibold text-[#123D25] mt-1">
+          <h2 className="text-2xl sm:text-3xl font-playfair font-bold text-[#3D182E] mt-1">
             Guest Book Sticky Wall
           </h2>
-          <GoldDivider width={190} variant="flourish" className="mx-auto mt-2" />
-          <p className="text-xs sm:text-sm font-serif italic text-[#76685A] mt-2 max-w-md mx-auto">
+          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#C49A43] to-transparent mx-auto mt-2" />
+          <p className="text-xs font-serif italic text-[#8C7A87] mt-2 max-w-sm mx-auto">
             Pin your heartfelt congratulations and prayers on Vishnuraj &amp; Josly&apos;s wedding keepsake board.
           </p>
         </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import QRCode from "qrcode";
 import {
   Camera,
@@ -13,11 +13,8 @@ import {
   Sparkles,
   Download,
   Smartphone,
-  Image as ImageIcon,
   Heart,
 } from "lucide-react";
-import { GoldDivider } from "@/components/decorations/GoldDivider";
-import { FloralCorner } from "@/components/decorations/FloralCorner";
 import { weddingData } from "@/data/wedding";
 
 export const PhotoDropSection: React.FC = () => {
@@ -27,19 +24,18 @@ export const PhotoDropSection: React.FC = () => {
 
   const { photoDrop } = weddingData;
 
-  // Generate crisp QR code on mount
   useEffect(() => {
     QRCode.toDataURL(photoDrop.driveUrl, {
       width: 480,
       margin: 1.5,
       color: {
-        dark: "#123D25",
-        light: "#FFFDF9",
+        dark: "#3D182E",
+        light: "#FFFFFF",
       },
       errorCorrectionLevel: "H",
     })
       .then((url) => setQrDataUrl(url))
-      .catch((err) => console.error("QR Code generation error:", err));
+      .catch((err) => console.error("QR Code error:", err));
   }, [photoDrop.driveUrl]);
 
   const handleCopyLink = async () => {
@@ -77,243 +73,157 @@ export const PhotoDropSection: React.FC = () => {
       icon: Camera,
       num: "01",
       title: "Snap the Moments",
-      description:
-        "Capture candid smiles, stage rituals, laughter, selfies, and lively celebration clips throughout the day.",
+      description: "Candid smiles, stage rituals, laughter, selfies & celebration clips.",
     },
     {
       icon: QrIcon,
       num: "02",
       title: "Scan or Tap Upload",
-      description:
-        "Point your phone camera at the QR code, or tap the button to jump straight into our shared Google Drive folder.",
+      description: "Point your phone camera or tap below to open Google Drive directly.",
     },
     {
       icon: UploadCloud,
       num: "03",
       title: "Drop Raw Photos",
-      description:
-        "Upload directly from your photo gallery in full original resolution without messaging compression.",
+      description: "Upload in full original quality without messaging compression.",
     },
   ];
 
   return (
-    <section
-      id="photos"
-      className="relative py-20 px-4 overflow-hidden bg-gradient-to-b from-[#FFF9ED] via-[#F8EFE2] to-[#FFF9ED]"
-    >
-      <FloralCorner position="top-left" size={170} />
-      <FloralCorner position="bottom-right" size={170} />
+    <section id="photos" className="w-full py-8 px-4 flex flex-col items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="w-full max-w-sm flex flex-col items-center text-center"
+      >
+        <span className="font-serif text-xs uppercase tracking-[0.3em] text-[#704863] font-semibold">
+          Guest Photo Drop
+        </span>
+        <h3 className="font-playfair text-2xl sm:text-3xl font-bold text-[#3D182E] mt-1 mb-2">
+          Snap &amp; Share
+        </h3>
+        <p className="text-xs font-serif italic text-[#704863] mb-5">
+          Be our wedding photographer for the day!
+        </p>
 
-      <div className="max-w-5xl mx-auto flex flex-col items-center relative z-20">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12 max-w-2xl"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#123D25]/10 border border-[#C49A43]/40 text-[#123D25] text-xs uppercase tracking-[0.25em] font-serif font-semibold mb-3">
-            <Camera className="w-3.5 h-3.5 text-[#C49A43]" />
-            <span>Guest Photo Drop</span>
+        {/* QR Code Presentation Card */}
+        <div className="w-full bg-[#FFFFFF] rounded-2xl p-5 border border-[#E8DFD8] shadow-[0_4px_20px_rgba(61,24,46,0.06)] relative flex flex-col items-center">
+          <span className="text-[10px] font-sans font-bold tracking-[0.25em] text-[#C49A43] uppercase mb-1">
+            Scan With Phone Camera
+          </span>
+          <h4 className="font-playfair text-lg font-bold text-[#3D182E] mb-3">
+            Google Drive Photo Drop
+          </h4>
+
+          {/* QR Frame */}
+          <div className="relative p-2.5 rounded-xl bg-white border border-[#E0D3CA] shadow-inner mb-3">
+            {qrDataUrl ? (
+              <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={qrDataUrl}
+                  alt="Scan to upload wedding photos to Google Drive"
+                  className="w-48 h-48 rounded-lg object-contain"
+                />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-10 h-10 rounded-full bg-[#FFFDF9] border border-[#C49A43] shadow-md flex items-center justify-center">
+                    <span className="font-script text-sm text-[#3D182E] font-bold">
+                      {weddingData.couple.monogram}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="w-48 h-48 flex items-center justify-center text-xs font-serif text-[#8C7A87]">
+                Generating QR Code...
+              </div>
+            )}
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-playfair font-semibold text-[#123D25]">
-            Snap &amp; Share
-          </h2>
-
-          <GoldDivider width={190} variant="flourish" className="mx-auto mt-2" />
-
-          <p className="text-base sm:text-lg font-serif italic text-[#700D20] mt-3 font-medium">
-            Be our wedding photographer for the day!
+          <p className="text-[11px] font-serif text-[#704863] mb-4">
+            Point your camera at the QR or tap below:
           </p>
 
-          <p className="text-sm sm:text-base font-serif text-[#76685A] mt-2 leading-relaxed">
-            {photoDrop.tagline}
-          </p>
-        </motion.div>
-
-        {/* Main Interactive Showcase Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
-          {/* Left Column: 3-Step Guide */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-6 flex flex-col gap-4"
+          {/* Upload Button */}
+          <a
+            href={photoDrop.driveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-3 px-5 rounded-full bg-[#3D182E] hover:bg-[#2A0E1F] text-[#FFF9F3] text-xs font-serif font-semibold tracking-wide border border-[#C49A43] shadow-[0_4px_14px_rgba(61,24,46,0.2)] hover:scale-102 active:scale-98 transition-all flex items-center justify-center gap-2 group cursor-pointer"
           >
-            <div className="bg-[#FFFDF9]/85 backdrop-blur-sm rounded-2xl p-6 sm:p-7 border border-[#C49A43]/40 shadow-[0_8px_30px_rgba(196,154,67,0.12)]">
-              <h3 className="font-playfair text-xl sm:text-2xl text-[#123D25] font-semibold mb-5 flex items-center gap-2.5">
-                <Sparkles className="w-5 h-5 text-[#C49A43]" />
-                How It Works
-              </h3>
+            <UploadCloud className="w-4 h-4 text-[#E5C67C] group-hover:animate-bounce" />
+            <span>Open &amp; Upload to Google Drive</span>
+            <ExternalLink className="w-3.5 h-3.5 text-[#E5C67C]/80" />
+          </a>
 
-              <div className="space-y-5">
-                {steps.map((step, idx) => {
-                  const StepIcon = step.icon;
-                  return (
-                    <div key={idx} className="flex items-start gap-4 group">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#123D25] to-[#0A2617] text-[#E5C67C] flex items-center justify-center shrink-0 border border-[#C49A43]/40 shadow-sm group-hover:scale-105 transition-transform">
-                        <StepIcon className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-sans font-bold text-[#C49A43] tracking-widest uppercase">
-                            Step {step.num}
-                          </span>
-                        </div>
-                        <h4 className="font-serif font-bold text-base text-[#700D20] mt-0.5">
-                          {step.title}
-                        </h4>
-                        <p className="text-xs sm:text-sm font-serif text-[#665749] mt-1 leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+          {/* Secondary Buttons: Copy Link & Download QR */}
+          <div className="grid grid-cols-2 gap-2 w-full mt-2.5">
+            <button
+              onClick={handleCopyLink}
+              className="py-2 px-3 rounded-full bg-[#FAF4F0] text-[#3D182E] font-serif text-xs font-semibold border border-[#D9C9C0] hover:bg-[#EFE5DE] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              {copiedLink ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-emerald-700">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-[#C49A43]" />
+                  <span>Copy Link</span>
+                </>
+              )}
+            </button>
 
-              {/* Hashtag Callout Pill */}
-              <div className="mt-6 pt-5 border-t border-[#C49A43]/25 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-[#700D20] fill-[#700D20]" />
-                  <span className="text-xs font-serif text-[#76685A]">
-                    Instagram &amp; Social tag:
-                  </span>
-                  <span className="text-xs font-mono font-bold text-[#123D25] bg-[#E5C67C]/25 px-2.5 py-1 rounded-md border border-[#C49A43]/30">
-                    {photoDrop.hashtag}
-                  </span>
-                </div>
-                <button
-                  onClick={handleCopyTag}
-                  className="inline-flex items-center gap-1.5 text-xs font-serif text-[#700D20] hover:text-[#123D25] font-semibold transition-colors cursor-pointer"
-                >
-                  {copiedTag ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      <span className="text-emerald-700">Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5 text-[#C49A43]" />
-                      <span>Copy Tag</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </motion.div>
+            <button
+              onClick={handleDownloadQR}
+              className="py-2 px-3 rounded-full bg-[#FAF4F0] text-[#3D182E] font-serif text-xs font-semibold border border-[#D9C9C0] hover:bg-[#EFE5DE] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5 text-[#C49A43]" />
+              <span>Save QR</span>
+            </button>
+          </div>
 
-          {/* Right Column: QR Code & Direct Actions Card */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-6 flex justify-center"
-          >
-            <div className="w-full max-w-md bg-gradient-to-b from-[#FFFDF9] via-[#FAF3E8] to-[#FFFDF9] rounded-3xl p-6 sm:p-8 border-2 border-[#C49A43]/50 shadow-[0_16px_40px_rgba(18,61,37,0.14)] flex flex-col items-center text-center relative overflow-hidden">
-              {/* Decorative top ribbon */}
-              <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#C49A43] via-[#E5C67C] to-[#C49A43]" />
-
-              <div className="w-10 h-10 rounded-full bg-[#123D25] text-[#E5C67C] border border-[#C49A43] flex items-center justify-center mb-3 shadow-sm">
-                <Camera className="w-5 h-5" />
-              </div>
-
-              <span className="text-[11px] font-sans font-bold tracking-[0.25em] text-[#C49A43] uppercase mb-1">
-                Scan With Phone Camera
-              </span>
-
-              <h3 className="font-playfair text-xl sm:text-2xl font-bold text-[#123D25] mb-4">
-                Google Drive Photo Drop
-              </h3>
-
-              {/* QR Code Presentation Frame */}
-              <div className="relative p-3.5 rounded-2xl bg-white border-2 border-[#C49A43]/60 shadow-inner group">
-                {qrDataUrl ? (
-                  <div className="relative">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={qrDataUrl}
-                      alt="Scan to upload wedding photos to Google Drive"
-                      className="w-52 h-52 sm:w-60 sm:h-60 rounded-lg object-contain"
-                    />
-
-                    {/* Central Monogram Overlay inside QR */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="w-12 h-12 rounded-full bg-[#FFFDF9] border-2 border-[#C49A43] shadow-md flex items-center justify-center">
-                        <span className="font-script text-base text-[#700D20] font-bold">
-                          {weddingData.couple.monogram}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="w-52 h-52 sm:w-60 sm:h-60 flex items-center justify-center text-sm font-serif text-[#76685A]">
-                    Generating QR Code...
-                  </div>
-                )}
-              </div>
-
-              <p className="text-xs font-serif text-[#76685A] mt-3 mb-5 max-w-xs leading-relaxed">
-                Open your phone camera &amp; point at the screen, or use the direct buttons below:
-              </p>
-
-              {/* Action Buttons */}
-              <div className="w-full flex flex-col gap-2.5">
-                {/* 1. Direct Upload Button */}
-                <a
-                  href={photoDrop.driveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-[#123D25] via-[#1a4e32] to-[#123D25] text-[#FFF9ED] font-serif font-semibold text-sm tracking-wide border border-[#C49A43] shadow-[0_6px_20px_rgba(18,61,37,0.3)] hover:scale-[1.02] hover:shadow-[0_8px_25px_rgba(18,61,37,0.4)] transition-all flex items-center justify-center gap-2 group cursor-pointer"
-                >
-                  <UploadCloud className="w-4 h-4 text-[#E5C67C] group-hover:animate-bounce" />
-                  <span>Open &amp; Upload to Google Drive</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#E5C67C]/80" />
-                </a>
-
-                {/* 2. Secondary Action Row: Copy Link & Download QR */}
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button
-                    onClick={handleCopyLink}
-                    className="py-2.5 px-3 rounded-full bg-[#FFFDF9] text-[#123D25] font-serif text-xs font-semibold border border-[#C49A43]/50 shadow-sm hover:bg-[#F6ECE0] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    {copiedLink ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        <span className="text-emerald-700">Link Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5 text-[#C49A43]" />
-                        <span>Copy Link</span>
-                      </>
-                    )}
-                  </button>
-
-                  <button
-                    onClick={handleDownloadQR}
-                    className="py-2.5 px-3 rounded-full bg-[#FFFDF9] text-[#123D25] font-serif text-xs font-semibold border border-[#C49A43]/50 shadow-sm hover:bg-[#F6ECE0] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    <Download className="w-3.5 h-3.5 text-[#C49A43]" />
-                    <span>Download QR</span>
-                  </button>
+          {/* 3 Step Guidance */}
+          <div className="w-full mt-5 pt-4 border-t border-[#EFE6E0] space-y-3 text-left">
+            {steps.map((st, idx) => (
+              <div key={idx} className="flex items-start gap-2.5">
+                <span className="w-5 h-5 rounded-full bg-[#FAF4F0] text-[#704863] border border-[#D9C9C0] text-[10px] font-sans font-bold flex items-center justify-center shrink-0">
+                  {idx + 1}
+                </span>
+                <div className="flex-1">
+                  <h5 className="font-serif font-bold text-xs text-[#3D182E]">
+                    {st.title}
+                  </h5>
+                  <p className="text-[11px] font-serif text-[#8C7A87] leading-relaxed">
+                    {st.description}
+                  </p>
                 </div>
               </div>
+            ))}
+          </div>
 
-              {/* Compatibility footnote */}
-              <div className="mt-4 flex items-center gap-1.5 text-[11px] font-serif text-[#76685A]">
-                <Smartphone className="w-3.5 h-3.5 text-[#C49A43]" />
-                <span>Compatible with iOS, Android &amp; PC</span>
-              </div>
-            </div>
-          </motion.div>
+          {/* Hashtag box */}
+          <div className="w-full mt-4 pt-3 border-t border-[#EFE6E0] flex items-center justify-between">
+            <span className="text-[11px] font-serif text-[#704863]">
+              Tag your stories:
+            </span>
+            <button
+              onClick={handleCopyTag}
+              className="inline-flex items-center gap-1 text-xs font-mono font-bold text-[#3D182E] bg-[#FAF4F0] px-2 py-0.5 rounded-md border border-[#D9C9C0] cursor-pointer"
+            >
+              <span>{photoDrop.hashtag}</span>
+              {copiedTag ? (
+                <Check className="w-3 h-3 text-emerald-600" />
+              ) : (
+                <Copy className="w-3 h-3 text-[#C49A43]" />
+              )}
+            </button>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
-

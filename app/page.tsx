@@ -1,22 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { EnvelopeOpening } from "@/components/opening/EnvelopeOpening";
-import { FloatingPetals } from "@/components/decorations/FloatingPetals";
-import { Navbar } from "@/components/navigation/Navbar";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { CoupleSection } from "@/components/sections/CoupleSection";
-import { CountdownSection } from "@/components/sections/CountdownSection";
-import { WeddingDetails } from "@/components/sections/WeddingDetails";
-import { VenueSection } from "@/components/sections/VenueSection";
-import { SadhyaSection } from "@/components/sections/SadhyaSection";
-import { FamilySection } from "@/components/sections/FamilySection";
+import { MobileInvitationHero } from "@/components/sections/MobileInvitationHero";
+import { WeddingProgramTimeline } from "@/components/sections/WeddingProgramTimeline";
+import { SaveTheDateCalendar } from "@/components/sections/SaveTheDateCalendar";
+import { BigDayCountdown } from "@/components/sections/BigDayCountdown";
+import { MobilePhotoCollage } from "@/components/sections/MobilePhotoCollage";
+import { MobileVenueSection } from "@/components/sections/MobileVenueSection";
+import { MobileFamilySection } from "@/components/sections/MobileFamilySection";
 import { WishesSection } from "@/components/sections/WishesSection";
 import { PhotoDropSection } from "@/components/sections/PhotoDropSection";
-import { RegardsSection } from "@/components/sections/RegardsSection";
-import { DepartureSection } from "@/components/sections/DepartureSection";
-import { ShareSection } from "@/components/sections/ShareSection";
-import { FooterSection } from "@/components/sections/FooterSection";
+import { MobileThankYouSection } from "@/components/sections/MobileThankYouSection";
+import { MobileStickyBar } from "@/components/navigation/MobileStickyBar";
 import { MusicPlayer } from "@/components/ui/MusicPlayer";
 import { DownloadCardModal } from "@/components/ui/DownloadCardModal";
 
@@ -24,7 +20,7 @@ export default function Home() {
   const [showEnvelope, setShowEnvelope] = useState(true);
   const [showDownloadModal, setShowDownloadModal] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleOpenModal = () => setShowDownloadModal(true);
     window.addEventListener("open-download-card", handleOpenModal);
     return () => window.removeEventListener("open-download-card", handleOpenModal);
@@ -32,7 +28,6 @@ export default function Home() {
 
   const handleEnvelopeComplete = () => {
     setShowEnvelope(false);
-    // When the main invitation page appears, trigger music
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("wedding-play-music"));
       const win = window as unknown as { __playWeddingMusic?: () => void };
@@ -43,17 +38,11 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[#FFF9ED] text-[#2F261F] selection:bg-[#E5C67C] selection:text-[#123D25]">
+    <main className="min-h-screen bg-[#EDE5DE] sm:py-8 flex flex-col items-center selection:bg-[#E5C67C] selection:text-[#3D182E] relative">
       {/* Opening 3D Envelope Experience */}
       {showEnvelope && (
         <EnvelopeOpening onOpenComplete={handleEnvelopeComplete} />
       )}
-
-      {/* Ambient Floating Jasmine & Gold Petals */}
-      <FloatingPetals />
-
-      {/* Sticky Top Navigation */}
-      <Navbar onReopenEnvelope={() => setShowEnvelope(true)} />
 
       {/* Floating Ambient Wedding Music Player */}
       <MusicPlayer />
@@ -64,22 +53,24 @@ export default function Home() {
         onClose={() => setShowDownloadModal(false)}
       />
 
-      {/* Main Single-Scroll Experience */}
-      <div className="relative">
-        <HeroSection />
-        <CoupleSection />
-        <CountdownSection />
-        <WeddingDetails />
-        <VenueSection />
-        <SadhyaSection />
-        <FamilySection />
+      {/* Mobile-First Centered Card Frame */}
+      {/* On Mobile (95% of users): 100% full width, edge-to-edge native card feel */}
+      {/* On Desktop: Centered phone mockup frame matching the reference images */}
+      <div className="w-full sm:max-w-[430px] md:max-w-[450px] min-h-screen bg-[#FFFFFF] sm:rounded-[36px] sm:shadow-[0_25px_70px_rgba(45,18,36,0.18)] sm:border-[6px] sm:border-[#3D182E]/10 overflow-hidden relative flex flex-col pb-16">
+        <MobileInvitationHero />
+        <WeddingProgramTimeline />
+        <SaveTheDateCalendar />
+        <BigDayCountdown />
+        <MobilePhotoCollage />
+        <MobileVenueSection />
+        <MobileFamilySection />
         <WishesSection />
         <PhotoDropSection />
-        <RegardsSection />
-        <DepartureSection />
-        <ShareSection />
-        <FooterSection />
+        <MobileThankYouSection />
       </div>
+
+      {/* Floating Bottom Quick Action Bar for Mobile */}
+      <MobileStickyBar />
     </main>
   );
 }
