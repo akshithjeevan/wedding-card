@@ -9,6 +9,7 @@ import { CoupleSection } from "@/components/sections/CoupleSection";
 import { CountdownSection } from "@/components/sections/CountdownSection";
 import { WeddingDetails } from "@/components/sections/WeddingDetails";
 import { VenueSection } from "@/components/sections/VenueSection";
+import { SadhyaSection } from "@/components/sections/SadhyaSection";
 import { FamilySection } from "@/components/sections/FamilySection";
 import { WishesSection } from "@/components/sections/WishesSection";
 import { PhotoDropSection } from "@/components/sections/PhotoDropSection";
@@ -70,6 +71,7 @@ export default function Home() {
         <CountdownSection />
         <WeddingDetails />
         <VenueSection />
+        <SadhyaSection />
         <FamilySection />
         <WishesSection />
         <PhotoDropSection />

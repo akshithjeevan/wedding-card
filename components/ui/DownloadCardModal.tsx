@@ -239,3 +239,4 @@ export const DownloadCardModal: React.FC<DownloadCardModalProps> = ({
     </AnimatePresence>
   );
 };
+
