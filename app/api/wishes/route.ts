@@ -33,6 +33,8 @@ function saveLocalWishes(wishes: Wish[]): void {
   }
 }
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const clientPromise = getMongoClient();
 
@@ -138,6 +140,14 @@ export async function PATCH(req: NextRequest) {
         );
 
         if (updated) {
+          // Keep local fallback in sync with MongoDB
+          try {
+            const currentWishes = getLocalWishes();
+            const synced = currentWishes.map((w) => (w.id === id ? updated : w));
+            saveLocalWishes(synced);
+          } catch {
+            // Ignore
+          }
           return NextResponse.json({ wish: updated, success: true });
         }
       } catch (mongoErr) {
@@ -165,6 +175,39 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ wish: updatedWish, success: true });
   } catch (err) {
     console.error("Error updating wish:", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+
+    // Delete from MongoDB Atlas
+    const clientPromise = getMongoClient();
+    if (clientPromise) {
+      try {
+        const client = await clientPromise;
+        const db = client.db("wedding");
+        await db.collection("wishes").deleteOne({ id });
+      } catch (mongoErr) {
+        console.warn("MongoDB Atlas delete failed:", mongoErr);
+      }
+    }
+
+    // Delete from local backup
+    const currentWishes = getLocalWishes();
+    const filtered = currentWishes.filter((w) => w.id !== id);
+    saveLocalWishes(filtered);
+
+    return NextResponse.json({ success: true, id });
+  } catch (err) {
+    console.error("Error deleting wish:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

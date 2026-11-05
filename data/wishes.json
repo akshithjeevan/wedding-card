@@ -1,12 +1,42 @@
 [
   {
-    "id": "wish-1793816916067-mdw7",
-    "name": "akshith",
+    "id": "wish-1793887220121-w1bz",
+    "name": "hi",
     "relationship": "Friend of Groom",
-    "message": "wish youn a happy married life",
-    "blessingTag": "✨ Eternal Love",
-    "color": "yellow",
-    "createdAt": "2026-11-04T18:28:36.067Z",
+    "message": "testing",
+    "blessingTag": "💖 Eternal Love",
+    "color": "sage",
+    "createdAt": "2026-11-05T14:00:20.121Z",
+    "likes": 1
+  },
+  {
+    "id": "wish-1793886833752-t8cv",
+    "name": "Suresh & Divya",
+    "relationship": "Friend of Groom",
+    "message": "Dearest Vishnuraj & Josly, may your journey together be blessed with endless happiness, prosperity, and love! Cannot wait to celebrate with you at Chiramel Auditorium!",
+    "blessingTag": "💖 Eternal Love",
+    "color": "rose",
+    "createdAt": "2026-11-05T13:53:53.752Z",
+    "likes": 1
+  },
+  {
+    "id": "wish-1793885493473-p7pi",
+    "name": "yhjyfguyff",
+    "relationship": "Friend of Groom",
+    "message": "hewllo world",
+    "blessingTag": "🕊️ Divine Grace",
+    "color": "peach",
+    "createdAt": "2026-11-05T13:31:33.473Z",
+    "likes": 1
+  },
+  {
+    "id": "wish-1793885454390-rh6y",
+    "name": "hello",
+    "relationship": "Friend of Groom",
+    "message": "test",
+    "blessingTag": "💖 Eternal Love",
+    "color": "lilac",
+    "createdAt": "2026-11-05T13:30:54.390Z",
     "likes": 1
   },
   {
@@ -27,7 +57,7 @@
     "blessingTag": "Joy & Happiness",
     "color": "rose",
     "createdAt": "2026-11-02T14:15:00.000Z",
-    "likes": 10
+    "likes": 9
   },
   {
     "id": "wish-3",

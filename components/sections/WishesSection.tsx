@@ -160,11 +160,16 @@ export const WishesSection: React.FC = () => {
   useEffect(() => {
     const fetchWishes = async () => {
       try {
-        const res = await fetch("/api/wishes");
+        const res = await fetch("/api/wishes", { cache: "no-store" });
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data.wishes) && data.wishes.length > 0) {
             setWishes(data.wishes);
+            try {
+              localStorage.setItem("wedding_wishes_backup", JSON.stringify(data.wishes));
+            } catch {
+              // Ignore
+            }
           }
         }
       } catch {
@@ -598,7 +603,7 @@ export const WishesSection: React.FC = () => {
                         zIndex: 40,
                         transition: { duration: 0.25, ease: "easeOut" },
                       }}
-                      className={`w-[290px] sm:w-[320px] shrink-0 relative p-6 pt-7 rounded-2xl bg-gradient-to-br ${theme.bgGradient} ${theme.border} border shadow-[0_12px_28px_rgba(0,0,0,0.08),0_4px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between transition-shadow duration-300 hover:shadow-[0_20px_45px_rgba(0,0,0,0.18)] select-none group cursor-pointer`}
+                      className={`w-[290px] sm:w-[320px] h-[260px] sm:h-[270px] shrink-0 relative p-6 pt-7 rounded-2xl bg-gradient-to-br ${theme.bgGradient} ${theme.border} border shadow-[0_12px_28px_rgba(0,0,0,0.08),0_4px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between transition-shadow duration-300 hover:shadow-[0_20px_45px_rgba(0,0,0,0.18)] select-none group cursor-pointer`}
                     >
                       {/* Realistic Metallic Gold Pushpin at Top Center */}
                       <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none drop-shadow-md">
@@ -616,9 +621,9 @@ export const WishesSection: React.FC = () => {
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-3 bg-white/35 backdrop-blur-[1px] border-x border-b border-white/40 rounded-b-sm pointer-events-none" />
 
                       {/* Note Content */}
-                      <div>
+                      <div className="flex-1 flex flex-col min-h-0">
                         {/* Header: Blessing Tag & Formatted Date */}
-                        <div className="flex items-center justify-between mb-3 relative z-10">
+                        <div className="flex items-center justify-between mb-3 relative z-10 shrink-0">
                           <span
                             className={`text-[11px] font-serif px-2.5 py-0.5 rounded-full border font-medium ${theme.tagClass}`}
                           >
@@ -629,16 +634,18 @@ export const WishesSection: React.FC = () => {
                           </span>
                         </div>
 
-                        {/* Handwritten Style Blessing Message */}
-                        <p
-                          className={`text-sm sm:text-[15px] font-serif italic ${theme.textColor} leading-relaxed relative z-10 mb-5 drop-shadow-[0_1px_0_rgba(255,255,255,0.4)]`}
-                        >
-                          &ldquo;{item.message}&rdquo;
-                        </p>
+                        {/* Handwritten Style Blessing Message - Centered and Uniform */}
+                        <div className="flex-1 flex items-center py-1">
+                          <p
+                            className={`text-sm sm:text-[15px] font-serif italic ${theme.textColor} leading-relaxed relative z-10 drop-shadow-[0_1px_0_rgba(255,255,255,0.4)] line-clamp-5`}
+                          >
+                            &ldquo;{item.message}&rdquo;
+                          </p>
+                        </div>
                       </div>
 
                       {/* Footer: Guest Name & Interactive Heart Reaction */}
-                      <div className="pt-3 border-t border-black/10 flex items-center justify-between relative z-10">
+                      <div className="pt-3 border-t border-black/10 flex items-center justify-between relative z-10 shrink-0 mt-auto">
                         <div>
                           <h4
                             className={`text-sm font-playfair font-bold ${theme.authorColor} tracking-wide`}
