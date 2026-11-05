@@ -316,3 +316,4 @@ export const PhotoDropSection: React.FC = () => {
     </section>
   );
 };
+
