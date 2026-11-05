@@ -74,3 +74,4 @@ export const MobileThankYouSection: React.FC = () => {
     </footer>
   );
 };
+

@@ -120,3 +120,4 @@ export const WeddingProgramTimeline: React.FC = () => {
     </section>
   );
 };
+

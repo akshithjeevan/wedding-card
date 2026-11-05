@@ -82,3 +82,4 @@ export const MobileVenueSection: React.FC = () => {
     </section>
   );
 };
+

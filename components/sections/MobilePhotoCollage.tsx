@@ -112,3 +112,4 @@ export const MobilePhotoCollage: React.FC = () => {
     </section>
   );
 };
+

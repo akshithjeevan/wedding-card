@@ -91,3 +91,4 @@ export const MobileStickyBar: React.FC = () => {
     </div>
   );
 };
+

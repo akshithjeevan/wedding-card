@@ -147,3 +147,4 @@ export const MobileInvitationHero: React.FC = () => {
     </section>
   );
 };
+
