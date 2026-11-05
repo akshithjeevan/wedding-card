@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { EnvelopeOpening } from "@/components/opening/EnvelopeOpening";
 import { FloatingPetals } from "@/components/decorations/FloatingPetals";
 import { Navbar } from "@/components/navigation/Navbar";
@@ -17,16 +17,16 @@ import { DepartureSection } from "@/components/sections/DepartureSection";
 import { ShareSection } from "@/components/sections/ShareSection";
 import { FooterSection } from "@/components/sections/FooterSection";
 import { MusicPlayer } from "@/components/ui/MusicPlayer";
-import { InvitationCardModal } from "@/components/ui/InvitationCardModal";
+import { DownloadCardModal } from "@/components/ui/DownloadCardModal";
 
 export default function Home() {
   const [showEnvelope, setShowEnvelope] = useState(true);
-  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
 
-  useEffect(() => {
-    const handleOpenModal = () => setIsCardModalOpen(true);
-    window.addEventListener("wedding-open-card-modal", handleOpenModal);
-    return () => window.removeEventListener("wedding-open-card-modal", handleOpenModal);
+  React.useEffect(() => {
+    const handleOpenModal = () => setShowDownloadModal(true);
+    window.addEventListener("open-download-card", handleOpenModal);
+    return () => window.removeEventListener("open-download-card", handleOpenModal);
   }, []);
 
   const handleEnvelopeComplete = () => {
@@ -57,6 +57,12 @@ export default function Home() {
       {/* Floating Ambient Wedding Music Player */}
       <MusicPlayer />
 
+      {/* 1-Click Printable / PDF Invitation Card Modal */}
+      <DownloadCardModal
+        isOpen={showDownloadModal}
+        onClose={() => setShowDownloadModal(false)}
+      />
+
       {/* Main Single-Scroll Experience */}
       <div className="relative">
         <HeroSection />
@@ -72,12 +78,6 @@ export default function Home() {
         <ShareSection />
         <FooterSection />
       </div>
-
-      {/* 1-Click Printable / PDF & WhatsApp Status Invitation Modal */}
-      <InvitationCardModal
-        isOpen={isCardModalOpen}
-        onClose={() => setIsCardModalOpen(false)}
-      />
     </main>
   );
 }

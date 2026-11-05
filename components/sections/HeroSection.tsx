@@ -89,27 +89,26 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="text-xs sm:text-sm font-serif text-[#2F261F]/80 max-w-md leading-relaxed px-4"
+          className="text-xs sm:text-sm font-serif text-[#2F261F]/80 max-w-md leading-relaxed px-4 mb-6"
         >
           {weddingData.couple.subMessage}
         </motion.p>
 
-        {/* 1-Click Card Download Button in Hero */}
+        {/* 1-Click Printable / PDF Invitation Download Button */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-6"
         >
           <button
             onClick={() => {
               if (typeof window !== "undefined") {
-                window.dispatchEvent(new CustomEvent("wedding-open-card-modal"));
+                window.dispatchEvent(new CustomEvent("open-download-card"));
               }
             }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FFFDF8]/90 text-[#123D25] border border-[#C49A43] shadow-[0_4px_14px_rgba(196,154,67,0.18)] hover:bg-[#F6ECE0] hover:scale-105 transition-all text-xs font-serif font-semibold tracking-wider cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#FFFDF9] text-[#123D25] border-2 border-[#C49A43] shadow-[0_4px_16px_rgba(196,154,67,0.2)] hover:bg-[#123D25] hover:text-[#FFF9ED] hover:scale-105 transition-all text-xs sm:text-sm font-serif font-semibold cursor-pointer group"
           >
-            <Download className="w-3.5 h-3.5 text-[#700D20]" />
+            <Download className="w-4 h-4 text-[#C49A43] group-hover:text-[#E5C67C] transition-colors" />
             <span>Download Invitation Card</span>
           </button>
         </motion.div>

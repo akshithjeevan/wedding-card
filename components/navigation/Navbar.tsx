@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, Mail } from "lucide-react";
+import { Menu, X, Mail, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { weddingData } from "@/data/wedding";
 
@@ -94,10 +94,36 @@ export const Navbar: React.FC<NavbarProps> = ({ onReopenEnvelope }) => {
               <span>Envelope</span>
             </button>
           )}
+
+          <button
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("open-download-card"));
+              }
+            }}
+            title="Download Invitation Card"
+            className="flex items-center gap-1.5 text-xs font-serif uppercase tracking-wider text-[#123D25] px-3 py-1.5 rounded-full border border-[#C49A43] bg-[#FFFDF9] hover:bg-[#123D25] hover:text-[#FFF9ED] transition-all shadow-xs cursor-pointer group"
+          >
+            <Download className="w-3.5 h-3.5 text-[#C49A43] group-hover:text-[#E5C67C]" />
+            <span>Card</span>
+          </button>
         </nav>
 
         {/* Mobile Hamburger Toggle */}
         <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("open-download-card"));
+              }
+            }}
+            className="p-1.5 rounded-full border border-[#C49A43] text-[#123D25] bg-[#FFFDF9]"
+            aria-label="Download Invitation Card"
+            title="Download Card"
+          >
+            <Download className="w-4 h-4 text-[#C49A43]" />
+          </button>
+
           {onReopenEnvelope && (
             <button
               onClick={onReopenEnvelope}
@@ -142,6 +168,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onReopenEnvelope }) => {
                   {link.name}
                 </a>
               ))}
+
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("open-download-card"));
+                  }
+                }}
+                className="mt-2 flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#123D25] text-[#FFF9ED] font-serif text-sm tracking-wide border border-[#C49A43] shadow-sm w-full max-w-xs cursor-pointer"
+              >
+                <Download className="w-4 h-4 text-[#E5C67C]" />
+                <span>Download Invitation Card</span>
+              </button>
             </div>
           </motion.div>
         )}
